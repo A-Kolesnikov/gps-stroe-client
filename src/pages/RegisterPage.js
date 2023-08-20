@@ -8,10 +8,8 @@ import { validateLogin } from "../service/validationManager";
 
 import axios from "axios";
 
-function LoginPage({ handleUserChange }) {
-    const [formData, setFormData] = useState({ email: '', password: '' })
-    const [errors, setErrors] = useState({})
-    const [serverResponse, setServerResponse] = useState()
+function RegisterPage({ handleUserChange}) {
+    const [formData, setFormData] = useState({email: '', password: '', name: '', telephone: ''})
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -19,23 +17,23 @@ function LoginPage({ handleUserChange }) {
             ...prevData,
             [name]: value
         }))
+        console.log(formData)
     }
 
     const validateAndProceed = (e) => {
         e.preventDefault()
         const currentErrors = validateLogin(formData.email, formData.password)
-        setErrors(currentErrors)
-        setServerResponse(null)
         if (Object.keys(currentErrors).length > 0){
-            return 0
+            console.log(currentErrors)
+            alert(`Please fill all the fields`)
         }else{
-            axios.post('http://localhost:3100/users/login', formData)
+            console.log(formData)
+            axios.post('http://localhost:3100/users/register', formData)
             .then(result => {
                 if(!result.data.failure){
                     handleUserChange(result.data)
                     console.log(`Hurrraaaay! ${JSON.stringify(result.data)}`)
                 } else {
-                    setServerResponse(result.data.failure)
                     console.log(result.data)
                 }
             })
@@ -45,56 +43,71 @@ function LoginPage({ handleUserChange }) {
 
     return (
         <Container>
-            <h1>Login page</h1>
+            <h1>Register page</h1>
             <Form>
                 <Row>
-                    <Form.Group controlId="formEmail" className="mt-5 mb-5">
+                    <Form.Group className="mt-5 mb-3">
                         <InputGroup>
                             <InputGroup.Text style={{ width: "100px" }}>Email</InputGroup.Text>
                             <FormControl
-                            required
                                 name="email"
                                 type="text"
                                 placeholder="Enter your email"
                                 defaultValue={formData.email}
-                                isInvalid={errors.emailError}
                                 onBlur={handleChange}
                                 autoComplete="current-email" //Should figure out how it works
                             />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.emailError}
-                            </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
 
-                    <Form.Group controlId="formPassword">
+                    <Form.Group className="mb-3">
                         <InputGroup>
                             <InputGroup.Text style={{ width: "100px" }}>Password</InputGroup.Text>
                             <FormControl
-                            required
                                 name="password"
                                 type="password"
                                 placeholder="Enter your password"
                                 defaultValue={formData.password}
-                                isInvalid={errors.passwordError}
                                 onBlur={handleChange}
                                 autoComplete="current-password" //Should figure out how it works
                             />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.passwordError}
-                            </Form.Control.Feedback>
+                        </InputGroup>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <InputGroup>
+                            <InputGroup.Text style={{ width: "100px" }}>Name</InputGroup.Text>
+                            <FormControl
+                                name="name"
+                                type="text"
+                                placeholder="Enter your name"
+                                defaultValue={formData.Sname}
+                                onBlur={handleChange}
+                                autoComplete="current-username" //Should figure out how it works
+                            />
+                        </InputGroup>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                        <InputGroup>
+                            <InputGroup.Text style={{ width: "100px" }}>Telephone</InputGroup.Text>
+                            <FormControl
+                                name="telephone"
+                                type="text"
+                                placeholder="Enter your phone number"
+                                defaultValue={formData.telephone}
+                                onBlur={handleChange}
+                                autoComplete="current-username" //Should figure out how it works
+                            />
                         </InputGroup>
                     </Form.Group>
                 </Row>
                 <Row className="justify-content-center mt-5">
                     <Button onClick={validateAndProceed} as={Col} xs md="2" variant="primary">Login</Button>
                 </Row>
-                <Row className="justify-content-center mt-5">
-                    <Col className="text-center" xs md="2">{serverResponse}</Col>
-                </Row>
             </Form>
         </Container>
     )
 }
 
-export default LoginPage
+export default RegisterPage
