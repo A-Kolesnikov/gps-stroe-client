@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "react-bootstrap";
 
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { validateLogin } from "../service/validationManager";
 
@@ -10,6 +10,8 @@ import axios from "axios";
 
 function RegisterPage({ handleUserChange}) {
     const [formData, setFormData] = useState({email: '', password: '', name: '', telephone: ''})
+
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -33,6 +35,7 @@ function RegisterPage({ handleUserChange}) {
                 if(!result.data.failure){
                     handleUserChange(result.data)
                     console.log(`Hurrraaaay! ${JSON.stringify(result.data)}`)
+                    navigate('/')
                 } else {
                     console.log(result.data)
                 }
@@ -103,7 +106,7 @@ function RegisterPage({ handleUserChange}) {
                     </Form.Group>
                 </Row>
                 <Row className="justify-content-center mt-5">
-                    <Button onClick={validateAndProceed} as={Col} xs md="2" variant="primary">Login</Button>
+                    <Button onClick={validateAndProceed} as={Col} xs md="2" variant="primary">Register</Button>
                 </Row>
             </Form>
         </Container>

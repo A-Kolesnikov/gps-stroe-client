@@ -2,16 +2,20 @@ import React, { useState } from "react";
 
 import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "react-bootstrap";
 
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { validateLogin } from "../service/validationManager";
 
 import axios from "axios";
 
-function LoginPage({ handleUserChange }) {
+function LoginPage({ handleUserChange, handleAuthorisedChange }) {
     const [formData, setFormData] = useState({ email: '', password: '' })
     const [errors, setErrors] = useState({})
     const [serverResponse, setServerResponse] = useState()
+
+    axios.defaults.withCredentials = true
+
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -32,8 +36,11 @@ function LoginPage({ handleUserChange }) {
             axios.post('http://localhost:3100/users/login', formData)
             .then(result => {
                 if(!result.data.failure){
-                    handleUserChange(result.data)
-                    console.log(`Hurrraaaay! ${JSON.stringify(result.data)}`)
+                    /*handleUserChange(result.data)
+                    console.log(`Hurrraaaay! ${JSON.stringify(result.data)}`)*/
+                    handleAuthorisedChange()
+                    console.log(result.data)
+                    navigate('/')
                 } else {
                     setServerResponse(result.data.failure)
                     console.log(result.data)
