@@ -21,7 +21,6 @@ function HomePage({currentUser}) {
         <Container>
             <Row>
                 <h2>Home page</h2>
-                <h3>Hello, {currentUser.id ? currentUser.name : "Guest!"}!</h3>
             </Row>
             <Row>
                 

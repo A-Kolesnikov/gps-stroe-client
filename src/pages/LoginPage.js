@@ -36,14 +36,12 @@ function LoginPage({ handleUserChange, handleAuthorisedChange }) {
             axios.post('http://localhost:3100/users/login', formData)
             .then(result => {
                 if(!result.data.failure){
-                    /*handleUserChange(result.data)
-                    console.log(`Hurrraaaay! ${JSON.stringify(result.data)}`)*/
-                    handleAuthorisedChange()
-                    console.log(result.data)
+                    //handleUserChange(result.data) //option without cookies
+                    handleAuthorisedChange(false)//to rerender if some user was logged before
+                    handleAuthorisedChange(true)
                     navigate('/')
                 } else {
                     setServerResponse(result.data.failure)
-                    console.log(result.data)
                 }
             })
             .catch(err => console.log(err))
@@ -96,7 +94,7 @@ function LoginPage({ handleUserChange, handleAuthorisedChange }) {
                 <Row className="justify-content-center mt-5">
                     <Button onClick={validateAndProceed} as={Col} xs md="2" variant="primary">Login</Button>
                 </Row>
-                <Row className="justify-content-center mt-5">
+                <Row className="justify-content-center mt-1">
                     <Col className="text-center" xs md="2">{serverResponse}</Col>
                 </Row>
             </Form>
