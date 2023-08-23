@@ -1,4 +1,4 @@
-export function validateLogin(email, password){
+export function validateLogin(email='', password=''){
     const emailPattern = /\S+@\S+\.\S+/
     const newErrors = {}
     if (email === ''){
