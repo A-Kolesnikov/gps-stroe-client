@@ -11,6 +11,7 @@ import axios from 'axios';
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import Header from './pages/components/Header'
 import NavBar from './pages/components/Navbar';
 import Footer from './pages/components/Footer'
@@ -60,6 +61,7 @@ function App() {
           <Route path='/' element={<HomePage currentUser={currentUser} />} />
           <Route path='/login' element={<LoginPage handleUserChange={handleUserChange} handleAuthorisedChange={handleAuthorisedChange} />} />
           <Route path='/register' element={<RegisterPage handleUserChange={handleUserChange} />} />
+          <Route path='/reset-password/:id/:token' element={<ResetPasswordPage />} />
         </Routes>
       </main>
 
