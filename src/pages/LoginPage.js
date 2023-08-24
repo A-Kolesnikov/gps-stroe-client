@@ -32,12 +32,12 @@ function LoginPage({ handleUserChange, handleAuthorisedChange }) {
         setServerResponse(null)
         if (Object.keys(currentErrors).length > 0){
             return 0
-        }else{
+        } else {
             axios.post('http://localhost:3100/users/login', formData)
             .then(result => {
                 if(!result.data.failure){
                     //handleUserChange(result.data) //option without cookies
-                    handleAuthorisedChange(false)//to rerender if some user was logged before
+                    handleAuthorisedChange(false)//to rerender in 100% of initial states
                     handleAuthorisedChange(true)
                     navigate('/')
                 } else {
