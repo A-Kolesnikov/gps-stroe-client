@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "react-bootstrap";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { validateLogin } from "../service/validationManager";
 
@@ -16,6 +16,10 @@ function ResetPasswordPage() {
     axios.defaults.withCredentials = true
 
     const navigate = useNavigate()
+
+    const paramHook = useParams()
+    const email = paramHook.email
+    const token = paramHook.token
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -31,7 +35,16 @@ function ResetPasswordPage() {
         setErrors(currentErrors)
         setServerResponse(null)
         if (!currentErrors.passwordError){
-            alert("You have to implement the reset functionality")
+            console.log(formData.password, email)
+            axios.post(`http://localhost:3100/users/reset-password`, {newPassword: formData.password, uniqueToken: token, requestingEmail: email})
+            .then(result => {
+                if (result.data.failure){
+                    setServerResponse(result.data.failure)
+                } else if (result.data.success) {
+                    setServerResponse(result.data.success)
+                }
+            })
+            .catch(err => console.log(err))
         }else{
             return 0
             /*axios.post('http://localhost:3100/users/login', formData)
@@ -51,7 +64,7 @@ function ResetPasswordPage() {
 
     return (
         <Container>
-            <h1>Reset your password</h1>
+            <h1>Password reset for {email}</h1>
             <Form>
                 <Row>
                     <Form.Group controlId="formPassword" className="mt-5 mb-5">
