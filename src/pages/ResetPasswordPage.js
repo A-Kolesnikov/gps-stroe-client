@@ -47,18 +47,6 @@ function ResetPasswordPage() {
             .catch(err => console.log(err))
         }else{
             return 0
-            /*axios.post('http://localhost:3100/users/login', formData)
-            .then(result => {
-                if(!result.data.failure){
-                    //handleUserChange(result.data) //option without cookies
-                    handleAuthorisedChange(false)//to rerender if some user was logged before
-                    handleAuthorisedChange(true)
-                    navigate('/')
-                } else {
-                    setServerResponse(result.data.failure)
-                }
-            })
-            .catch(err => console.log(err))*/
         }
     }
 

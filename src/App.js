@@ -44,6 +44,7 @@ function App() {
   const logout = () => {
     axios.get('http://localhost:3100/users/logout')
       .then(res => {
+        setAuthorised(true) //to rerender in 100% of initial states
         setAuthorised(false)
       })
       .catch(err => console.log(err))
