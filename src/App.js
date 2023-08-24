@@ -61,7 +61,7 @@ function App() {
           <Route path='/' element={<HomePage currentUser={currentUser} />} />
           <Route path='/login' element={<LoginPage handleUserChange={handleUserChange} handleAuthorisedChange={handleAuthorisedChange} />} />
           <Route path='/register' element={<RegisterPage handleUserChange={handleUserChange} />} />
-          <Route path='/reset-password/:id/:token' element={<ResetPasswordPage />} />
+          <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
         </Routes>
       </main>
 
