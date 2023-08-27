@@ -17,35 +17,47 @@ import NavBar from './pages/components/Navbar';
 import Footer from './pages/components/Footer'
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({})
-  const [authorised, setAuthorised] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
+  const [authorised, setAuthorised] = useState(document.cookie.includes("user_token=") ? true : false) //trigger for useEffect to rerender currentUser
+  const [visitCounter, setVisitCounter] = useState('')
 
   axios.defaults.withCredentials = true
 
+  const handleAuthorisedChange = (status) => {
+    setAuthorised(prevStatus => !prevStatus)
+    setAuthorised(prevStatus => prevStatus === status ? prevStatus : status) //protection from wrong initial status
+  }
+
   useEffect(() => {
+    const controller = new AbortController() //prevents unstable behavior during fast multiple recall
+
+    axios.get('http://localhost:3100/counter')  //counter is triggered each time, page refreshed. On login and logout we get request from server to delete session, then counter triggered by change authorised state
+    .then(res => {
+      setVisitCounter(Math.ceil((res.data.counts+1)/2)) // divide by 2 due to ReactStrictMode
+    })
+
     axios.get('http://localhost:3100/users/currentUser')
       .then(res => {
-        if (!res.data.failure) {
-          setCurrentUser(res.data)
+        if (res.data.currentUser) {
+          setCurrentUser({...res.data.currentUser})
+          setAuthorised(true)
         } else {
-          setCurrentUser({})
+          setCurrentUser(null)
+          setAuthorised(false)
         }
       })
+
+      return () => controller.abort()
   }, [authorised])
 
   const handleUserChange = (receivedUser) => { //not needed anymore with sessions
     setCurrentUser(receivedUser)
   }
 
-  const handleAuthorisedChange = (status) => {
-    setAuthorised(status)
-  }
-
   const logout = () => {
     axios.get('http://localhost:3100/users/logout')
       .then(res => {
-        setAuthorised(true) //to rerender in 100% of initial states
-        setAuthorised(false)
+        handleAuthorisedChange(false)
       })
       .catch(err => console.log(err))
   }
@@ -56,11 +68,14 @@ function App() {
         <Header currentUser={currentUser} logout={logout} />
       </div>
       <NavBar />
-      
+      <div>
+        Visits: {visitCounter}
+      </div>
+
       <main className='row'>
         <Routes>
           <Route path='/' element={<HomePage currentUser={currentUser} />} />
-          <Route path='/login' element={<LoginPage handleUserChange={handleUserChange} handleAuthorisedChange={handleAuthorisedChange} />} />
+          <Route path='/login' element={<LoginPage handleUserChange={handleUserChange} handleAuthorisedChange={handleAuthorisedChange}/>} />
           <Route path='/register' element={<RegisterPage handleUserChange={handleUserChange} />} />
           <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
         </Routes>

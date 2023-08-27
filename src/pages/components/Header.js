@@ -10,7 +10,7 @@ function Header({currentUser, logout}) {
 
     let userSection = null
     if (location.pathname !== '/login' && location.pathname !== '/register'){
-        if (Object.keys(currentUser).length > 0){
+        if (currentUser) /*(Object.keys(currentUser).length > 0)*/{
             userSection = <Col className="d-flex justify-content-end align-items-center">
                 <Button onClick={()=>logout()} className="m-2 mt-3">Logout</Button>
                 <Button className="m-2 mt-3">User details</Button>
@@ -27,7 +27,7 @@ function Header({currentUser, logout}) {
         <header className="container-fluid">
             <Row className="d-flex justify-content-between">
                 <Col  className="p-3 text-uppercase fs-2">
-                    Welcome to GPS-store{currentUser.id ? `, ${currentUser.name}` : ", guest"}!
+                    Welcome to GPS-store{currentUser ? `, ${currentUser.name}` : ", guest"}!
                 </Col>
 
                 {userSection}

@@ -8,7 +8,7 @@ import { validateLogin } from "../service/validationManager";
 
 import axios from "axios";
 
-function LoginPage({ handleUserChange, handleAuthorisedChange }) {
+function LoginPage({ handleUserChange, handleAuthorisedChange, removeCookie, sessionCounter }) {
     const [formData, setFormData] = useState({ email: '', password: '' })
     const [errors, setErrors] = useState({})
     const [serverResponse, setServerResponse] = useState()
@@ -33,11 +33,11 @@ function LoginPage({ handleUserChange, handleAuthorisedChange }) {
         if (Object.keys(currentErrors).length > 0){
             return 0
         } else {
+            console.log("Moving here1")
             axios.post('http://localhost:3100/users/login', formData)
             .then(result => {
+                console.log("Moving here2")
                 if(!result.data.failure){
-                    //handleUserChange(result.data) //option without cookies
-                    handleAuthorisedChange(false)//to rerender in 100% of initial states
                     handleAuthorisedChange(true)
                     navigate('/')
                 } else {
