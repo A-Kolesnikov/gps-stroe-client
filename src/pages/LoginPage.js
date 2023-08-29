@@ -4,11 +4,11 @@ import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "reac
 
 import { useNavigate } from "react-router-dom";
 
-import { validateLogin } from "../service/validationManager";
+import { validateLogin, validateEmail } from "../service/validationManager";
 
 import axios from "axios";
 
-function LoginPage({ handleUserChange, handleAuthorisedChange, removeCookie, sessionCounter }) {
+function LoginPage({ handleAuthorisedChange, removeCookie, sessionCounter }) {
     const [formData, setFormData] = useState({ email: '', password: '' })
     const [errors, setErrors] = useState({})
     const [serverResponse, setServerResponse] = useState()
@@ -31,17 +31,15 @@ function LoginPage({ handleUserChange, handleAuthorisedChange, removeCookie, ses
         setErrors(currentErrors)
         setServerResponse(null)
         if (Object.keys(currentErrors).length > 0){
-            return 0
+            return null
         } else {
-            console.log("Moving here1")
-            axios.post('http://localhost:3100/users/login', formData)
+            axios.post('http://localhost:3100/users/login', formData)   //receiving user_token as response
             .then(result => {
-                console.log("Moving here2")
-                if(!result.data.failure){
+                if(!result.data.failure){   //refactor to response status check
                     handleAuthorisedChange(true)
                     navigate('/')
                 } else {
-                    setServerResponse(result.data.failure)
+                    setServerResponse(result.data?.failure)  //refactor to response status check
                 }
             })
             .catch(err => console.log(err))
@@ -50,16 +48,14 @@ function LoginPage({ handleUserChange, handleAuthorisedChange, removeCookie, ses
 
     const resetPassword = (e) => {
         e.preventDefault()
-        const currentErrors = validateLogin(formData.email, formData.password)
+        const currentErrors = validateEmail(formData.email)
         setErrors(currentErrors)
-        console.log (currentErrors)
         if (!currentErrors.emailError){
-            console.log('Resetting password')
             axios.post(`http://localhost:3100/users//forgot-password`, {emailToReset: formData.email})
             .then(result => {
-                if (result.data.failure){
+                if (result.data.failure){   //refactor to response status check
                     setServerResponse(result.data.failure)
-                } else if (result.data.success){
+                } else if (result.data.success){    //refactor to response status check
                     setServerResponse(result.data.success)
                 }
             })
@@ -79,7 +75,7 @@ function LoginPage({ handleUserChange, handleAuthorisedChange, removeCookie, ses
                         <InputGroup>
                             <InputGroup.Text style={{ width: "100px" }}>Email</InputGroup.Text>
                             <FormControl
-                            required
+                                required
                                 name="email"
                                 type="text"
                                 placeholder="Enter your email"
