@@ -18,7 +18,7 @@ import Footer from './pages/components/Footer'
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
-  const [authorised, setAuthorised] = useState(document.cookie.includes("user_token=") ? true : false) //trigger for useEffect to rerender currentUser
+  const [authorised, setAuthorised] = useState(document.cookie.includes("user_token=")) //trigger for useEffect to rerender currentUser
   const [visitCounter, setVisitCounter] = useState('')
 
   axios.defaults.withCredentials = true
@@ -50,9 +50,9 @@ function App() {
       return () => controller.abort()
   }, [authorised])
 
-  const handleUserChange = (receivedUser) => { //not needed anymore with sessions
+  /*const handleUserChange = (receivedUser) => { //not needed anymore with tokens
     setCurrentUser(receivedUser)
-  }
+  }*/
 
   const logout = () => {
     axios.get('http://localhost:3100/users/logout')
@@ -75,8 +75,8 @@ function App() {
       <main className='row'>
         <Routes>
           <Route path='/' element={<HomePage currentUser={currentUser} />} />
-          <Route path='/login' element={<LoginPage handleUserChange={handleUserChange} handleAuthorisedChange={handleAuthorisedChange}/>} />
-          <Route path='/register' element={<RegisterPage handleUserChange={handleUserChange} />} />
+          <Route path='/login' element={<LoginPage handleAuthorisedChange={handleAuthorisedChange}/>} />
+          <Route path='/register' element={<RegisterPage handleAuthorisedChange={handleAuthorisedChange} />} />
           <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
         </Routes>
       </main>
