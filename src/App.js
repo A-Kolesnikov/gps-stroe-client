@@ -21,7 +21,9 @@ function App() {
   const [authorised, setAuthorised] = useState(document.cookie.includes("user_token=")) //trigger for useEffect to rerender currentUser
   const [visitCounter, setVisitCounter] = useState('')
 
-  axios.defaults.withCredentials = true
+  axios.defaults.withCredentials = true // enable sending credentials (cookies) with cross-origin requests
+
+  //Custom Hooks
 
   const handleAuthorisedChange = (status) => {
     setAuthorised(prevStatus => !prevStatus)
@@ -47,7 +49,7 @@ function App() {
         }
       })
 
-      return () => controller.abort()
+      return () => controller.abort() //cleanUp function - runs when component is unmount
   }, [authorised])
 
   /*const handleUserChange = (receivedUser) => { //not needed anymore with tokens
