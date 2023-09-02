@@ -5,9 +5,9 @@ import { Container, Row, Col } from "react-bootstrap";
 
 import axios from "axios";
 
-import ProductCardVertical from "./components/ProductCardVertical";
+import { ProductCardVertical } from "./components/ProductCards";
 
-const serverUrl = 'http://localhost:3100' //move to config
+const serverUrl = 'http://localhost:3100' //put into config
 
 function HomePage({ currentUser }) {
     axios.defaults.withCredentials = true
@@ -15,13 +15,6 @@ function HomePage({ currentUser }) {
     if (error) {
         console.log(error)
     }
-    /*const [products, setProducts] = useState([])
-    useEffect(() => {
-        const fetchedData = axios.get('http://localhost:3100/products')
-        fetchedData.then(res => {
-            setProducts(res.data)
-        })
-    }, [])*/
 
     return (
         <Container>
@@ -31,7 +24,7 @@ function HomePage({ currentUser }) {
             <Row>
                 {loading ? <div>Loading products...</div> : (!data || !data[0]) ? <div>No products available</div> : data.map((product) => {
                     return (
-                        <Col key={`featured-${product.id}`}>
+                        <Col  className="mb-3" xxl={3} lg={6} key={`featured-${product.id}`}>
                             <ProductCardVertical product={product} />
                         </Col>
                     )

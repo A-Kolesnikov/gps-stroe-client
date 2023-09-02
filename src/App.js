@@ -11,9 +11,10 @@ import axios from 'axios';
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
-import ResetPasswordPage from './pages/ResetPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage'
+import ProductDetailsPage from './pages/ProductDetailsPage';
 import Header from './pages/components/Header'
-import NavBar from './pages/components/Navbar';
+import NavBar from './pages/components/Navbar'
 import Footer from './pages/components/Footer'
 
 function App() {
@@ -34,14 +35,14 @@ function App() {
     const controller = new AbortController() //prevents unstable behavior during fast multiple recall
 
     axios.get('http://localhost:3100/counter')  //counter is triggered each time, page refreshed. On login and logout we get request from server to delete session, then counter triggered by change authorised state
-    .then(res => {
-      setVisitCounter(Math.ceil((res.data.counts+1)/2)) // divide by 2 due to ReactStrictMode
-    })
+      .then(res => {
+        setVisitCounter(Math.ceil((res.data.counts + 1) / 2)) // divide by 2 due to ReactStrictMode
+      })
 
     axios.get('http://localhost:3100/users/currentUser')
       .then(res => {
         if (res.data.currentUser) {
-          setCurrentUser({...res.data.currentUser})
+          setCurrentUser({ ...res.data.currentUser })
           setAuthorised(true)
         } else {
           setCurrentUser(null)
@@ -49,12 +50,8 @@ function App() {
         }
       })
 
-      return () => controller.abort() //cleanUp function - runs when component is unmount
+    return () => controller.abort() //cleanUp function - runs when component is unmount
   }, [authorised])
-
-  /*const handleUserChange = (receivedUser) => { //not needed anymore with tokens
-    setCurrentUser(receivedUser)
-  }*/
 
   const logout = () => {
     axios.get('http://localhost:3100/users/logout')
@@ -77,9 +74,10 @@ function App() {
       <main className='row'>
         <Routes>
           <Route path='/' element={<HomePage currentUser={currentUser} />} />
-          <Route path='/login' element={<LoginPage handleAuthorisedChange={handleAuthorisedChange}/>} />
+          <Route path='/login' element={<LoginPage handleAuthorisedChange={handleAuthorisedChange} />} />
           <Route path='/register' element={<RegisterPage handleAuthorisedChange={handleAuthorisedChange} />} />
           <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
+          <Route path='/product-details/:id' element={<ProductDetailsPage />} />
         </Routes>
       </main>
 

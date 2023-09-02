@@ -27,3 +27,21 @@ footer{
   text-decoration: none;
   color: white;
 }
+
+.card{
+  transition: 0.2s;
+}
+.card:hover{
+  transform: scale(1.01);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.cardHeaderSale{
+  text-transform: uppercase;
+  background: linear-gradient(to right, red, white);
+  color: white/*not working*/;
+}
+.cardHeaderNewProduct{
+  text-transform: uppercase;
+  background: linear-gradient(to right, blue, white);
+  color: white/*not working*/
+}
