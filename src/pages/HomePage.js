@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import useFetch from "./hooks/useFetch";
 
 import { Container, Row, Col } from "react-bootstrap";
 
 import axios from "axios";
 
-import { ProductCardVertical } from "./components/ProductCards";
+import { ProductCardVertical, ProductCardHorizontal } from "./components/ProductCards";
 
 const serverUrl = 'http://localhost:3100' //put into config
 
@@ -24,9 +24,14 @@ function HomePage({ currentUser }) {
             <Row>
                 {loading ? <div>Loading products...</div> : (!data || !data[0]) ? <div>No products available</div> : data.map((product) => {
                     return (
-                        <Col  className="mb-3" xxl={3} lg={6} key={`featured-${product.id}`}>
-                            <ProductCardVertical product={product} />
-                        </Col>
+                        <Fragment  key={`featured-${product.id}`}>
+                            <Col className="mb-3 d-none d-lg-block" xxl={3} lg={6}>
+                                <ProductCardVertical product={product} />
+                            </Col>
+                            <Col className="mb-3 d-lg-none" xs={12}>
+                                <ProductCardHorizontal product={product} />
+                            </Col>
+                        </Fragment>
                     )
                 })}
             </Row>
