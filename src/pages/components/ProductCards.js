@@ -61,7 +61,7 @@ function createRatingIndicator(product) {
         comment = null
     if (!product.rating) {
         while (cnt > 0){
-            indicator.push(<FontAwesomeIcon icon={faRegularStar} className="fa-sm text-secondary" />)
+            indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faRegularStar} className="fa-sm text-secondary" />)
             cnt--
         }
     } else {
@@ -69,14 +69,14 @@ function createRatingIndicator(product) {
         comment = `(${parseFloat(product.rating).toFixed(1)})` //WHY REQUIRED TO parseFloat?!?!
         while (cnt > 0) {
             if (ratingPoints >= 0.75) {
-                indicator.push(<FontAwesomeIcon icon={faStar} className="fa-sm text-warning" />)
+                indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faStar} className="fa-sm text-warning" />)
                 ratingPoints--
             } else if (ratingPoints < 0.75 && ratingPoints > 0.2) {
-                indicator.push(<FontAwesomeIcon icon={faStarHalfStroke} className="fa-sm text-warning" />)
+                indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faStarHalfStroke} className="fa-sm text-warning" />)
                 ratingPoints = 0
             } else {
                 ratingPoints = 0
-                indicator.push(<FontAwesomeIcon icon={faRegularStar} className="fa-sm text-warning" />)
+                indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faRegularStar} className="fa-sm text-warning" />)
             }
             cnt--
         }
