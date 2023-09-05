@@ -2,8 +2,8 @@ import React from "react"
 import { Link } from "react-router-dom"
 import { Button, Card, Col, Row } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faStar, faCheck, faXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
-
+import { faStar, faStarHalfStroke, faCheck, faXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+import { faStar as faRegularStar } from "@fortawesome/free-regular-svg-icons"
 
 //Defining common elements for all types of cards
 const currency = '€'
@@ -46,11 +46,45 @@ function createPriceStyling(product) {
 function createButtons(product) {
     return (
         <div className="d-grid gap-2">
-                {product.units_in_stock > 0 ?
-                    <Button as={Col} variant="primary" disabled>Add to cart</Button> :
-                    <Button as={Col} variant="secondary" active>No items for cart</Button>} {/*className="mb-4 mx-2" */}
-                <Button as={Col} variant="secondary">Add to wishlist</Button>
+            {product.units_in_stock > 0 ?
+                <Button as={Col} variant="primary" disabled>Add to cart</Button> :
+                <Button as={Col} variant="secondary" active>No items for cart</Button>} {/*className="mb-4 mx-2" */}
+            <Button as={Col} variant="secondary">Add to wishlist</Button>
         </div>
+    )
+}
+
+function createRatingIndicator(product) {
+
+    let cnt = 5,
+        indicator = [],
+        comment = null
+    if (!product.rating) {
+        while (cnt > 0){
+            indicator.push(<FontAwesomeIcon icon={faRegularStar} className="fa-sm text-secondary" />)
+            cnt--
+        }
+    } else {
+        let ratingPoints = product.rating
+        comment = `(${parseFloat(product.rating).toFixed(1)})` //WHY REQUIRED TO parseFloat?!?!
+        while (cnt > 0) {
+            if (ratingPoints >= 0.75) {
+                indicator.push(<FontAwesomeIcon icon={faStar} className="fa-sm text-warning" />)
+                ratingPoints--
+            } else if (ratingPoints < 0.75 && ratingPoints > 0.2) {
+                indicator.push(<FontAwesomeIcon icon={faStarHalfStroke} className="fa-sm text-warning" />)
+                ratingPoints = 0
+            } else {
+                ratingPoints = 0
+                indicator.push(<FontAwesomeIcon icon={faRegularStar} className="fa-sm text-warning" />)
+            }
+            cnt--
+        }
+    }
+    return (
+        <Col className="mx-3 text-end">
+            {comment} {indicator}
+        </Col>
     )
 }
 
@@ -61,6 +95,7 @@ export function ProductCardVertical({ product }) {
     const priceStyling = createPriceStyling(product)
     const inStcokIndicator = createInStockIndicator(product)
     const buttons = createButtons(product)
+    const ratingIndicator = createRatingIndicator(product)
 
     return (
         <Card className="h-100"> {/*h-100 - to make cards in a row of a same hight*/}
@@ -79,7 +114,12 @@ export function ProductCardVertical({ product }) {
                             title={product.name}>
                             {product.name}
                         </Card.Title>
-                        <Card.Subtitle>{`Reference: ${product.reference}`}</Card.Subtitle>
+                        <Row className="align-items-center">
+                            <Col>
+                                <Card.Subtitle>{`Reference: ${product.reference}`}</Card.Subtitle>
+                            </Col>
+                            {ratingIndicator}
+                        </Row>
                         <Card.Text
                             className=" text-xl overflow-hidden ellipsis" /*FIND WHY ELLIPSIS NOT WORKING HERE??!!*//*FIND WHY text-xl NOT WORKING HERE?*/
                             style={{ maxHeight: "3rem" }}
@@ -90,6 +130,7 @@ export function ProductCardVertical({ product }) {
                 </Row>
 
                 <Row className="className=mt-auto"> {/*className=mt-auto - to make buttons stay at the bottom*/}
+
                     {inStcokIndicator}
                     <Card.Text className="mb-2 text-center">
                         <span style={{ color: "red", fontSize: "x-large", textDecoration: "line-through" }}>
@@ -114,6 +155,7 @@ export function ProductCardHorizontal({ product }) {
     const priceStyling = createPriceStyling(product)
     const inStcokIndicator = createInStockIndicator(product)
     const buttons = createButtons(product)
+    const ratingIndicator = createRatingIndicator(product)
 
     return (
         <Card className="h-100"> {/*h-100 - to make cards in a row of a same hight*/}
@@ -136,7 +178,12 @@ export function ProductCardHorizontal({ product }) {
                                             title={product.name}>
                                             {product.name}
                                         </Card.Title>
+                                        <Row  className="align-items-center">
+                                            <Col>
                                         <Card.Subtitle>{`Reference: ${product.reference}`}</Card.Subtitle>
+                                            </Col>
+                                        {ratingIndicator}
+                                        </Row>
                                         <Card.Text
                                             className="overflow-hidden ellipsis" /*WHY ELLIPSIS NOT WORKING HERE??!!*/
                                             style={{ maxHeight: "6rem" }}
@@ -170,7 +217,7 @@ export function ProductCardHorizontal({ product }) {
     )
 }
 
-export function ProductCardAdaptive({ product }) {
+export function ProductCardAdaptive({ product }) { //not finished
 
     const imageUrl = `${product.main_image}` /*?w=100&h=180*/ /* /100px180 */ /*not working sizing of ReactBootstrap*/
 
