@@ -45,3 +45,6 @@ footer{
   background: linear-gradient(to right, blue, white);
   color: white/*not working*/
 }
+.cardTextPropperties{ /*to replace not working text-xl*/
+  font-size: large
+}
