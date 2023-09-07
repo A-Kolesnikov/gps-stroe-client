@@ -1,9 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react'
-
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Container, Row, Col } from 'react-bootstrap'
-
 import { Routes, Route, Link } from 'react-router-dom'
 
 import axios from 'axios';
@@ -12,10 +10,15 @@ import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
-import ProductDetailsPage from './pages/ProductDetailsPage';
+import ProductDetailsPage from './pages/ProductDetailsPage'
 import Header from './pages/components/Header'
 import NavBar from './pages/components/Navbar'
 import Footer from './pages/components/Footer'
+import Sidebar from './pages/components/Sidebar'
+
+import useFetch from './pages/hooks/useFetch'
+
+const serverUrl = 'http://localhost:3100'
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -23,8 +26,6 @@ function App() {
   const [visitCounter, setVisitCounter] = useState('')
 
   axios.defaults.withCredentials = true // enable sending credentials (cookies) with cross-origin requests
-
-  //Custom Hooks
 
   const handleAuthorisedChange = (status) => {
     setAuthorised(prevStatus => !prevStatus)
@@ -61,6 +62,8 @@ function App() {
       .catch(err => console.log(err))
   }
 
+  const {data: categories, error: categoriesError, loading: categoriesLoading} = useFetch(`${serverUrl}/categories`)
+
   return (
     <Container fluid className='page d-flex flex-column'>
       <div className='row'>
@@ -72,13 +75,18 @@ function App() {
       </div>
 
       <main className='row'>
-        <Routes>
-          <Route path='/' element={<HomePage currentUser={currentUser} />} />
-          <Route path='/login' element={<LoginPage handleAuthorisedChange={handleAuthorisedChange} />} />
-          <Route path='/register' element={<RegisterPage handleAuthorisedChange={handleAuthorisedChange} />} />
-          <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
-          <Route path='/product-details/:id' element={<ProductDetailsPage />} />
-        </Routes>
+        <Col className='d-none d-lg-block' lg={2}>
+          <Sidebar categories={categories} />
+        </Col>
+        <Col lg={10} xs={12}>
+          <Routes>
+            <Route path='/' element={<HomePage currentUser={currentUser} />} />
+            <Route path='/login' element={<LoginPage handleAuthorisedChange={handleAuthorisedChange} />} />
+            <Route path='/register' element={<RegisterPage handleAuthorisedChange={handleAuthorisedChange} />} />
+            <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
+            <Route path='/product-details/:id' element={<ProductDetailsPage />} />
+          </Routes>
+        </Col>
       </main>
 
       <Footer />

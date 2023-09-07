@@ -228,10 +228,10 @@ export function ProductCardAdaptive({ product }) { //not finished
         return (<Card.Header as="h5">{product.tag}</Card.Header>)
     })()
 
-    const priceStyling = product.units_in_stock > 0 ?
+    const priceStyling = createPriceStyling(product)/*product.units_in_stock > 0 ?
         { color: "green", fontSize: "x-large" }
         :
-        { color: "grey", fontSize: "x-large" }
+        { color: "grey", fontSize: "x-large" }*/
 
     const inStcokIndicator = product.units_in_stock > 0 ?
         <Card.Text className="text-center mt-3 mb-1" title={`${product.units_in_stock} pcs`}>
