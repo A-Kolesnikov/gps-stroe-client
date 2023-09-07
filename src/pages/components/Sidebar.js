@@ -6,7 +6,7 @@ function Sidebar({ categories }){
     return(
         <Container fluid>
             Categories:
-            {!categories ? <h5>Loading...</h5> : categories.map((item)=>{return<p>{item.name}</p>})}
+            {!categories ? <h5>Loading...</h5> : categories.map((item)=>{return<p key={item.id}>{item.name}</p>})}
             
         </Container>
     )
