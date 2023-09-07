@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Routes, Route, Link } from 'react-router-dom'
 
-import axios from 'axios';
+import axios from 'axios'
+import Cookies from 'js-cookie' //npm i js-cookie
 
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
@@ -17,6 +18,7 @@ import Footer from './pages/components/Footer'
 import Sidebar from './pages/components/Sidebar'
 
 import useFetch from './pages/hooks/useFetch'
+import useCookies from './pages/hooks/useCookies';
 
 const serverUrl = 'http://localhost:3100'
 
@@ -62,7 +64,9 @@ function App() {
       .catch(err => console.log(err))
   }
 
-  const {data: categories, error: categoriesError, loading: categoriesLoading} = useFetch(`${serverUrl}/categories`)
+  //const {data: categories, error: categoriesError, loading: categoriesLoading} = useFetch(`${serverUrl}/categories`)
+  const {data:catCookie, error:catCookieError, loading: catCookieLoading} = useCookies('categories', `${serverUrl}/categories`)
+  console.log(catCookie)
 
   return (
     <Container fluid className='page d-flex flex-column'>
@@ -76,7 +80,7 @@ function App() {
 
       <main className='row'>
         <Col className='d-none d-lg-block' lg={2}>
-          <Sidebar categories={categories} />
+          <Sidebar categories={catCookie} />
         </Col>
         <Col lg={10} xs={12}>
           <Routes>
