@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 axios.defaults.withCredentials = true
 
-export default function useFetch(url) {
+export default function useFetch(url, method="GET", requestBody = null) {
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -11,8 +11,13 @@ export default function useFetch(url) {
         const controller = new AbortController() //prevents unstable behavior during fast multiple recall
         async function fetchData() {
             try {
+                const axiosConfig = {
+                    method: method,
+                    url: url,
+                    data: requestBody
+                }
                 //setLoading(true)
-                const response = await axios.get(url)
+                const response = await axios(axiosConfig)//.get(url)
                 setData(response.data)
             } catch (err) {
                 setError(err)
@@ -23,6 +28,6 @@ export default function useFetch(url) {
         setTimeout(()=>fetchData(), 800) //FOR DEBUGGING - IMITATES DELAY OF SERVER RESPONSE
 
         return () => controller.abort() //cleanUp function - runs when component is unmount
-    }, [url])
+    }, [url, method, requestBody])
     return {data, error, loading}
 }

@@ -51,7 +51,7 @@ function LoginPage({ handleAuthorisedChange, removeCookie, sessionCounter }) {
         const currentErrors = validateEmail(formData.email)
         setErrors(currentErrors)
         if (!currentErrors.emailError){
-            axios.post(`http://localhost:3100/users//forgot-password`, {emailToReset: formData.email})
+            axios.post(`http://localhost:3100/users/forgot-password`, {emailToReset: formData.email})
             .then(result => {
                 if (result.data.failure){   //refactor to response status check
                     setServerResponse(result.data.failure)
