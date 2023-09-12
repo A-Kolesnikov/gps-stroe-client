@@ -22,8 +22,8 @@ function Sidebar({ categoriesTree }) {
     if (location.pathname !== '/login' && location.pathname !== '/register') {
         return (
             <Container fluid>
-                Categories:
-                {!categoriesTree ? <h5>Loading...</h5> : <CollapsableTree data={categoriesTree} />}
+
+                {!categoriesTree ? <h5>Loading...</h5> : <CollapsableTree data={categoriesTree} parrentName={'Categories'} />}
             </Container>
         )
     } else return <></>
