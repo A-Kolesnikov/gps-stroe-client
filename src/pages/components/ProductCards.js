@@ -101,13 +101,13 @@ export function ProductCardVertical({ product }) {
         <Card className="h-100"> {/*h-100 - to make cards in a row of a same hight*/}
 
             {cardHeader}
-            <Link to={`/product-details/${product.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/product-details/${product.id}`}>
                 <Card.Img variant="top" src={imageUrl} style={{ width: "100%", height: "180px", objectFit: "contain" }} />
             </Link>
             <Card.Body className="d-flex flex-column"> {/*d-flex flex-column - to make buttons stay at the bottom*/}
 
                 <Row className="flex-grow-1"> {/*flex-grow-1 - to make buttons stay at the bottom*/}
-                    <Link to={`/product-details/${product.id}`} style={{ textDecoration: "none", color: "black" }}>
+                    <Link to={`/product-details/${product.id}`} className="blackTextLink">
                         <Card.Title
                             className="text-xl overflow-hidden"
                             style={{ maxHeight: "5.5rem" }}

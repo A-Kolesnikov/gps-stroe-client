@@ -11,6 +11,15 @@ export default function useCookies(cookieName, url = null, method = "GET", reque
 
     useEffect(() => {
         let readCookie = Cookies.get(cookieName)
+
+        function convertIfJSON(cookieString) {
+            if (cookieString[0] === 'j') {
+                cookieString = cookieString.substring(2)
+                return JSON.parse(cookieString)
+            }
+            return cookieString
+        }
+
         async function fetchData() {
             try {
                 const axiosConfig = {
@@ -22,7 +31,7 @@ export default function useCookies(cookieName, url = null, method = "GET", reque
                 //const set_cookieHeader = response.headers['set-cookie'] //cannot intercept set-cookie header because of browser security policy
                 //const cookieValue = set_cookieHeader[0].split(';')[0]
                 if (response.status === 200 || response.status === 201) {
-                    readCookie = Cookies.get(cookieName)
+                    readCookie = convertIfJSON(Cookies.get(cookieName))
                     setData(readCookie)
                 }
             } catch (err) {
@@ -31,7 +40,9 @@ export default function useCookies(cookieName, url = null, method = "GET", reque
                 setLoading(false)
             }
         }
+        
         if (readCookie) {
+            readCookie = convertIfJSON(readCookie)
             setData(readCookie)
             setLoading(false)
         } else if (url) {

@@ -17,8 +17,10 @@ import NavBar from './pages/components/Navbar'
 import Footer from './pages/components/Footer'
 import Sidebar from './pages/components/Sidebar'
 
+import createTree from './service/createCategoriesTree'
+
 import useFetch from './pages/hooks/useFetch'
-import useCookies from './pages/hooks/useCookies';
+import useCookies from './pages/hooks/useCookies'
 
 const serverUrl = 'http://localhost:3100'
 
@@ -65,8 +67,10 @@ function App() {
   }
 
   //const {data: categories, error: categoriesError, loading: categoriesLoading} = useFetch(`${serverUrl}/categories`)
-  const {data:catCookie, error:catCookieError, loading: catCookieLoading} = useCookies('categories', `${serverUrl}/categories`)
-  console.log(catCookie)
+  const {data:categoriesArr, error:categoriesError, loading: categoriesLoading} = useCookies('categories', `${serverUrl}/categories`)
+  const categoriesTree = (!categoriesArr ? null : createTree(categoriesArr))
+  console.log(categoriesTree)
+
 
   return (
     <Container fluid className='page d-flex flex-column'>
@@ -80,7 +84,7 @@ function App() {
 
       <main className='row'>
         <Col className='d-none d-lg-block' lg={2}>
-          <Sidebar categories={catCookie} />
+          <Sidebar categoriesTree={categoriesTree} />
         </Col>
         <Col lg={10} xs={12}>
           <Routes>

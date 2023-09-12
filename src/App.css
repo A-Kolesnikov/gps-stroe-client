@@ -48,3 +48,17 @@ footer{
 .cardTextPropperties{ /*to replace not working text-xl*/
   font-size: large
 }
+
+.blackTextLink{
+  text-decoration: none;
+  color: black;
+}
+.whiteTextLink{
+  text-decoration: none;
+  color: white;
+}
+
+.tree-node{
+  border-bottom: 1px grey solid;
+}
+
