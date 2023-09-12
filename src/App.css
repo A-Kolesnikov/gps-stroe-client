@@ -48,3 +48,7 @@ footer{
 .cardTextPropperties{ /*to replace not working text-xl*/
   font-size: large
 }
+
+.tree-node{
+  border-bottom: 1px grey solid;
+}

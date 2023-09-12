@@ -67,9 +67,9 @@ function App() {
   }
 
   //const {data: categories, error: categoriesError, loading: categoriesLoading} = useFetch(`${serverUrl}/categories`)
-  const {data:catCookie, error:catCookieError, loading: catCookieLoading} = useCookies('categories', `${serverUrl}/categories`)
-  const treeOfCategories = (!catCookie ? null : createTree(catCookie))
-  console.log(treeOfCategories)
+  const {data:categoriesArr, error:categoriesError, loading: categoriesLoading} = useCookies('categories', `${serverUrl}/categories`)
+  const categoriesTree = (!categoriesArr ? null : createTree(categoriesArr))
+  console.log(categoriesTree)
 
 
   return (
@@ -84,7 +84,7 @@ function App() {
 
       <main className='row'>
         <Col className='d-none d-lg-block' lg={2}>
-          <Sidebar treeOfCategories={treeOfCategories} />
+          <Sidebar categoriesTree={categoriesTree} />
         </Col>
         <Col lg={10} xs={12}>
           <Routes>
