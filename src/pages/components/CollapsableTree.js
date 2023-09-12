@@ -6,15 +6,13 @@ import { faCaretRight, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 
 function TreeNode({ data }) {
     const [isCollapsed, setCollapsed] = useState(true)
-
     const toggleCollapse = () => {
         setCollapsed(prevIsCollapsed => !prevIsCollapsed)
     }
-
     return (
         <Fragment >
 
-            <Row className="tree-node px-0 my-2">
+            <Row className="tree-node px-0 pb-1 my-2">
                 <Col className="gx-0 text-xl d-flex" style={{ fontSize: 'large' }}>
                     <Link to={`/products/${data.id}`} className="blackTextLink">    {/*Specific for categories tree*/}
                         {data.name}
