@@ -5,7 +5,7 @@ import { Container, Row, Col } from "react-bootstrap"
 
 import { ProductCardVertical, ProductCardHorizontal } from "./components/ProductCards"
 
-const serverUrl = 'http://localhost:3100' //put into config //= process.env.server_base_url
+const serverUrl = process.env.REACT_APP_SERVER_URL
 
 function HomePage({ currentUser }) {
     const { data, loading, error } = useFetch(`${serverUrl}/products`)
