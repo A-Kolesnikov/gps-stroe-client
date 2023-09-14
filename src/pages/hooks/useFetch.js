@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 axios.defaults.withCredentials = true
 
-export default function useFetch(url, method="GET", requestBody = null) {
+export default function useFetch(url=null, method="GET", requestBody = null) {
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -17,7 +17,7 @@ export default function useFetch(url, method="GET", requestBody = null) {
                     data: requestBody
                 }
                 //setLoading(true)
-                const response = await axios(axiosConfig)//.get(url)
+                const response = !url ? {data:null} : await axios(axiosConfig)//.get(url)
                 setData(response.data)
             } catch (err) {
                 setError(err)
