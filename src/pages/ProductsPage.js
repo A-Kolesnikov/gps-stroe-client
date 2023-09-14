@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom"
 
 import { Container, Row, Col } from "react-bootstrap"
 
+import defineSubTree from "../service/defineSubTree"
+import { collectChildrenIDs } from "../service/treeOperations"
 
 const serverUrl = process.env.REACT_APP_SERVER_URL
 
@@ -12,55 +14,25 @@ function ProductsPage({ categoriesArr, categoriesTree }) {
     const categoryID = parseInt(paramHook.categoryID)
     const mainCategoriesTree = { id: -1, name: 'All Categories', children: categoriesTree }
 
-    function defineSubTree(tree) {
-        let result = null
-        function findCurrentInTree(tree) {
-            if (tree.id == categoryID){
-                result = tree
-                return 
-            } else if (tree.children) {
-                for (const child of tree.children) {
-                    findCurrentInTree(child)
-                }
-            }
-            return
-        }
-        findCurrentInTree(tree)
-        return result
-    }
-
     const [currentCategory, setCurrentCategory] = useState(null)
     useEffect(() => {
-        /*if (categoriesArr && categoriesArr[0]){
-            setCurrentCategory(categoriesArr.find(item => item.id == categoryID))
-            }*/
         if (categoriesTree) {
             setCurrentCategory(
-                defineSubTree(mainCategoriesTree)
+                defineSubTree(mainCategoriesTree, categoryID)
             )
         }
-
     }, [categoryID])
 
-    const subCategoriesRequest = (() => {
-        if (categoryID == -1) return []
+    const productsURL = (() => {
         if (!currentCategory) return null
-        return categoriesArr/*.find(item => item.id == categoryID).hierarchy.split('-')*/.filter((element) => { element.hierarchy.split('-').includes(currentCategory.id.toString()) })
+        if (currentCategory.id === -1) return `${serverUrl}/products/`
+        return (
+            `${serverUrl}/products/of-category/${collectChildrenIDs(currentCategory).join(',')}`
+            )
     })()
 
-    /*!currentCategory ? null : (
-        currentCategory.id < 1 ? [] : ( //case of "all categories level"
-            categoriesArr.map((element) => {
-                if(element.hierarchy.split('-').includes(currentCategory.id)) //valid for current category and all its children
-                {return element}
-            })
-        )
-    )*/
-
-
-
-    const { data: products, error: productsError, loading: productsLoading } = useFetch(`${serverUrl}/products/of-category/3`)
-    //console.log(products)
+    const { data: products, error: productsError, loading: productsLoading } = useFetch(productsURL)
+    console.log(products)
 
 
     return (
