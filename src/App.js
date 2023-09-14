@@ -12,6 +12,8 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import ProductDetailsPage from './pages/ProductDetailsPage'
+import ProductsPage from './pages/ProductsPage'
+
 import Header from './pages/components/Header'
 import NavBar from './pages/components/Navbar'
 import Footer from './pages/components/Footer'
@@ -22,7 +24,7 @@ import createTree from './service/createCategoriesTree'
 import useFetch from './pages/hooks/useFetch'
 import useCookies from './pages/hooks/useCookies'
 
-const serverUrl = 'http://localhost:3100'
+const serverUrl = process.env.REACT_APP_SERVER_URL
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -69,7 +71,7 @@ function App() {
   //const {data: categories, error: categoriesError, loading: categoriesLoading} = useFetch(`${serverUrl}/categories`)
   const {data:categoriesArr, error:categoriesError, loading: categoriesLoading} = useCookies('categories', `${serverUrl}/categories`)
   const categoriesTree = (!categoriesArr ? null : createTree(categoriesArr))
-  console.log(categoriesTree)
+  console.log (categoriesTree)
 
 
   return (
@@ -93,6 +95,7 @@ function App() {
             <Route path='/register' element={<RegisterPage handleAuthorisedChange={handleAuthorisedChange} />} />
             <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
             <Route path='/product-details/:id' element={<ProductDetailsPage />} />
+            <Route path='/products/:categoryID' element={<ProductsPage categoriesArr={categoriesArr} categoriesTree={categoriesTree} />} />
           </Routes>
         </Col>
       </main>

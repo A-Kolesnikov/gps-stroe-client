@@ -27,7 +27,7 @@ function Header({currentUser, logout}) {
         <header className="container-fluid">
             <Row className="d-flex justify-content-between">
                 <Col  className="p-3 text-uppercase fs-2">
-                    Welcome to GPS-store{currentUser ? `, ${currentUser.name}` : ", guest"}!
+                    Welcome to GPS-store{currentUser ? `, ${currentUser.name}!` : "!"}
                 </Col>
 
                 {userSection}

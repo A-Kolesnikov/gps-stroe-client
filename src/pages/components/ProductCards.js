@@ -10,9 +10,9 @@ const currency = '€'
 
 function createCardHeader(product) {
     if (!product.tag) return <div className="my-3"></div>
-    if (product.tag === 'sale') return (<Card.Header className="cardHeaderSale py-1" style={{ color: 'white' }} as="h5">SALE</Card.Header>)
-    if (product.tag === 'new') return (<Card.Header className="cardHeaderNewProduct py-1" style={{ color: 'white' }} as="h5">NEW</Card.Header>)
-    return (<Card.Header as="h5">{product.tag}</Card.Header>)
+    if (product.tag === 'sale') return (<Card.Header className="cardHeaderSale py-1 px-2" style={{ color: 'white' }}>SALE</Card.Header>)
+    if (product.tag === 'new') return (<Card.Header className="cardHeaderNewProduct py-1 px-2" style={{ color: 'white' }}>NEW</Card.Header>)
+    return (<Card.Header className="py-1 px-2">{product.tag}</Card.Header>)
 }
 
 function createInStockIndicator(product) { //FIND WHY cursor-pointer DOESNT WORK?!?!
@@ -61,15 +61,15 @@ function createRatingIndicator(product) {
         comment = null
     if (!product.rating) {
         while (cnt > 0){
-            indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faRegularStar} className="fa-sm text-secondary" />)
+            indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faRegularStar} className="fa-xs text-secondary" />)
             cnt--
         }
     } else {
         let ratingPoints = product.rating
-        comment = `(${parseFloat(product.rating).toFixed(1)})` //WHY REQUIRED TO parseFloat?!?!
+        comment = `(${parseFloat(product.rating).toFixed(1)}) ` //WHY REQUIRED TO parseFloat?
         while (cnt > 0) {
             if (ratingPoints >= 0.75) {
-                indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faStar} className="fa-sm text-warning" />)
+                indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faStar} className="fa-xs text-warning" />)
                 ratingPoints--
             } else if (ratingPoints < 0.75 && ratingPoints > 0.2) {
                 indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faStarHalfStroke} className="fa-sm text-warning" />)
@@ -82,8 +82,8 @@ function createRatingIndicator(product) {
         }
     }
     return (
-        <Col className="mx-3 text-end">
-            {comment} {indicator}
+        <Col className="mx-2 px-2 text-end" style={{fontSize:"smaller"}}>
+            {comment}{indicator}
         </Col>
     )
 }
