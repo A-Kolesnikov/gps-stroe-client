@@ -7,20 +7,14 @@ import { Container, Row, Col } from "react-bootstrap"
 
 const serverUrl = process.env.REACT_APP_SERVER_URL
 
-
-
 function ProductsPage({ categoriesArr, categoriesTree }) {
     const paramHook = useParams()
     const categoryID = parseInt(paramHook.categoryID)
     const mainCategoriesTree = { id: -1, name: 'All Categories', children: categoriesTree }
-    console.log(mainCategoriesTree)
 
-    function defineTree(tree) {
+    function defineSubTree(tree) {
         let result = null
         function findCurrentInTree(tree) {
-            console.log(`I am in:`)
-            console.log(tree)
-            console.log(categoryID)
             if (tree.id == categoryID){
                 result = tree
                 return 
@@ -42,7 +36,7 @@ function ProductsPage({ categoriesArr, categoriesTree }) {
             }*/
         if (categoriesTree) {
             setCurrentCategory(
-                defineTree(mainCategoriesTree)
+                defineSubTree(mainCategoriesTree)
             )
         }
 
