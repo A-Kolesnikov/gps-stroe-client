@@ -19,7 +19,7 @@ import NavBar from './pages/components/Navbar'
 import Footer from './pages/components/Footer'
 import Sidebar from './pages/components/Sidebar'
 
-import createTree from './service/createCategoriesTree'
+import { createTree } from './service/treeOperations'
 
 import useFetch from './pages/hooks/useFetch'
 import useCookies from './pages/hooks/useCookies'
@@ -41,12 +41,12 @@ function App() {
   useEffect(() => {
     const controller = new AbortController() //prevents unstable behavior during fast multiple recall
 
-    axios.get('http://localhost:3100/counter')  //counter is triggered each time, page refreshed. On login and logout we get request from server to delete session, then counter triggered by change authorised state
+    axios.get(`${serverUrl}/counter`)  //counter is triggered each time, page refreshed. On login and logout we get request from server to delete session, then counter triggered by change authorised state
       .then(res => {
         setVisitCounter(Math.ceil((res.data.counts + 1) / 2)) // divide by 2 due to ReactStrictMode
       })
 
-    axios.get('http://localhost:3100/users/currentUser')
+    axios.get(`${serverUrl}/users/currentUser`)
       .then(res => {
         if (res.data.currentUser) {
           setCurrentUser({ ...res.data.currentUser })
@@ -61,18 +61,15 @@ function App() {
   }, [authorised])
 
   const logout = () => {
-    axios.get('http://localhost:3100/users/logout')
+    axios.get(`${serverUrl}/users/logout`)
       .then(res => {
         handleAuthorisedChange(false)
       })
       .catch(err => console.log(err))
   }
 
-  //const {data: categories, error: categoriesError, loading: categoriesLoading} = useFetch(`${serverUrl}/categories`)
   const {data:categoriesArr, error:categoriesError, loading: categoriesLoading} = useCookies('categories', `${serverUrl}/categories`)
   const categoriesTree = (!categoriesArr ? null : createTree(categoriesArr))
-  console.log (categoriesTree)
-
 
   return (
     <Container fluid className='page d-flex flex-column'>
