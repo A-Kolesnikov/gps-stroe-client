@@ -4,6 +4,7 @@ import useFetch from "./hooks/useFetch"
 import { Container, Row, Col } from "react-bootstrap"
 
 import { ProductCardVertical, ProductCardHorizontal } from "./components/ProductCards"
+import ProductCardAdaptiveComplect from "./components/ProductCardAdaptiveComplect"
 
 const serverUrl = process.env.REACT_APP_SERVER_URL
 
@@ -16,7 +17,7 @@ function HomePage({ currentUser }) {
     return (
         <Container fluid>
             <Row>
-                <h2>Home page</h2>
+                <h2>You may be interested:</h2>
             </Row>
             <Row>
                 {loading ?
@@ -25,14 +26,7 @@ function HomePage({ currentUser }) {
                         <div>No products available</div> :
                         data.map((product) => {
                             return (
-                                <Fragment key={`featured-${product.id}`}>
-                                    <Col className="mb-3 d-none d-lg-block" xxl={3} lg={6}>
-                                        <ProductCardVertical product={product} />
-                                    </Col>
-                                    <Col className="mb-3 d-lg-none" xs={12}>
-                                        <ProductCardHorizontal product={product} />
-                                    </Col>
-                                </Fragment>
+                                <ProductCardAdaptiveComplect key={`featured-${product.id}`} product={product}/>
                             )
                         })}
             </Row>

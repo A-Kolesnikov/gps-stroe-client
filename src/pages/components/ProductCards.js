@@ -15,14 +15,14 @@ function createCardHeader(product) {
     return (<Card.Header className="py-1 px-2">{product.tag}</Card.Header>)
 }
 
-function createInStockIndicator(product) { //FIND WHY cursor-pointer DOESNT WORK?!?!
+function createInStockIndicator(product) { //FIND WHY cursor-pointer DOESNT WORK?
     if (product.units_in_stock > 5) {
         return (
             <Card.Text className="text-center mt-3 mb-1 cursor-pointer" title={`${product.units_in_stock} pcs`}>
                 <FontAwesomeIcon icon={faCheck} className="fa-lg text-success cursor-pointer" /> In stock
             </Card.Text>
         )
-    } else if (product.units_in_stock < 1) {
+    } else if (product.units_in_stock < 1 || !product.units_in_stock) {
         return (
             <Card.Text className="text-center mt-3 mb-1 cursor-pointer">
                 <FontAwesomeIcon icon={faXmark} className="fa-lg text-danger" /> Out of stock
@@ -90,7 +90,7 @@ function createRatingIndicator(product) {
 
 export function ProductCardVertical({ product }) {
 
-    const imageUrl = `${product.main_image}` /*?w=100&h=180*/ /* /100px180 */ /*not working sizing of ReactBootstrap*/
+    const imageUrl = `../${product.main_image}` /*?w=100&h=180*/ /* /100px180 */ /*not working sizing of ReactBootstrap*/
     const cardHeader = createCardHeader(product)
     const priceStyling = createPriceStyling(product)
     const inStcokIndicator = createInStockIndicator(product)
@@ -150,7 +150,7 @@ export function ProductCardVertical({ product }) {
 
 export function ProductCardHorizontal({ product }) {
 
-    const imageUrl = `${product.main_image}` /*?w=100&h=180*/ /* /100px180 */ /*not working sizing of ReactBootstrap*/
+    const imageUrl = `../${product.main_image}` /*?w=100&h=180*/ /* /100px180 */ /*not working sizing of ReactBootstrap*/
     const cardHeader = createCardHeader(product)
     const priceStyling = createPriceStyling(product)
     const inStcokIndicator = createInStockIndicator(product)
