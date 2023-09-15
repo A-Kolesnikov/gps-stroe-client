@@ -25,13 +25,15 @@ import { createTree } from './service/treeOperations'
 
 import useFetch from './pages/hooks/useFetch'
 import useCookies from './pages/hooks/useCookies'
+import useCurrentUser from './pages/hooks/useCurrentUser'
 
 const serverUrl = process.env.REACT_APP_SERVER_URL
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null)
   const [authorised, setAuthorised] = useState(document.cookie.includes("user_token=")) //trigger for useEffect to rerender currentUser
-  const [visitCounter, setVisitCounter] = useState('')
+  /*const [currentUser, setCurrentUser] = useState(null)
+  const [visitCounter, setVisitCounter] = useState('')*/
+  const [userTrigger, setUserTrigger] = useState(false)
 
   axios.defaults.withCredentials = true // enable sending credentials (cookies) with cross-origin requests
 
@@ -40,7 +42,13 @@ function App() {
     setAuthorised(prevStatus => prevStatus === status ? prevStatus : status) //protection from wrong initial status
   }
 
-  useEffect(() => {
+  const handleUserTrigger = () => {
+    setUserTrigger(prevStatus => !prevStatus)
+  }
+
+  
+
+  /*useEffect(() => {
     const controller = new AbortController() //prevents unstable behavior during fast multiple recall
 
     axios.get(`${serverUrl}/counter`)  //counter is triggered each time, page refreshed. On login and logout we get request from server to delete session, then counter triggered by change authorised state
@@ -68,7 +76,12 @@ function App() {
         handleAuthorisedChange(false)
       })
       .catch(err => console.log(err))
-  }
+  }*/
+
+
+
+  const {currentUser, visitCounter, logout} = useCurrentUser(userTrigger, handleUserTrigger)
+  console.log(currentUser)
 
   const { data: categoriesArr, error: categoriesError, loading: categoriesLoading } = useCookies('categories', `${serverUrl}/categories`)
   const categoriesTree = (!categoriesArr ? null : createTree(categoriesArr))
@@ -101,8 +114,8 @@ function App() {
           <Col lg={10} xs={12}>
             <Routes>
               <Route path='/' element={<HomePage currentUser={currentUser} />} />
-              <Route path='/login' element={<LoginPage handleAuthorisedChange={handleAuthorisedChange} />} />
-              <Route path='/register' element={<RegisterPage handleAuthorisedChange={handleAuthorisedChange} />} />
+              <Route path='/login' element={<LoginPage handleAuthorisedChange={handleAuthorisedChange} handleUserTrigger={handleUserTrigger} />} />
+              <Route path='/register' element={<RegisterPage handleAuthorisedChange={handleAuthorisedChange} handleUserTrigger={handleUserTrigger} />} />
               <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
               <Route path='/product-details/:id' element={<ProductDetailsPage />} />
               <Route path='/products/:categoryID' element={<ProductsPage categoriesArr={categoriesArr} categoriesTree={categoriesTree} />} />
@@ -113,7 +126,7 @@ function App() {
         <Footer />
       </Container>
     </Context.Provider>
-  );
+  )
 }
 
 export default App;
