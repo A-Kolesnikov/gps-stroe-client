@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react"
+import Context from "../hooks/contexts/Context"
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"
 
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap"
 
-function Header({currentUser, logout}) {
+function Header({logout}) {
     const location = useLocation()
     const navigate = useNavigate()
+
+    const { currentUser } = useContext(Context)
 
     let userSection = null
     if (location.pathname !== '/login' && location.pathname !== '/register'){

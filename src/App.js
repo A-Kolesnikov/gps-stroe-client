@@ -7,6 +7,8 @@ import { Routes, Route, Link } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'js-cookie' //npm i js-cookie
 
+import Context from './pages/hooks/contexts/Context'
+
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
@@ -68,37 +70,49 @@ function App() {
       .catch(err => console.log(err))
   }
 
-  const {data:categoriesArr, error:categoriesError, loading: categoriesLoading} = useCookies('categories', `${serverUrl}/categories`)
+  const { data: categoriesArr, error: categoriesError, loading: categoriesLoading } = useCookies('categories', `${serverUrl}/categories`)
   const categoriesTree = (!categoriesArr ? null : createTree(categoriesArr))
 
+  const currentCart = null
+  const currentWishList = null
+
+  const value = {
+    currentUser,
+    currentCart,
+    currentWishList
+  }
+
   return (
-    <Container fluid className='page d-flex flex-column'>
-      <div className='row'>
-        <Header currentUser={currentUser} logout={logout} />
-      </div>
-      <NavBar />
-      <div>
-        Visits: {visitCounter}
-      </div>
+    <Context.Provider value={value}>
 
-      <main className='row'>
-        <Col className='d-none d-lg-block' lg={2}>
-          <Sidebar categoriesTree={categoriesTree} />
-        </Col>
-        <Col lg={10} xs={12}>
-          <Routes>
-            <Route path='/' element={<HomePage currentUser={currentUser} />} />
-            <Route path='/login' element={<LoginPage handleAuthorisedChange={handleAuthorisedChange} />} />
-            <Route path='/register' element={<RegisterPage handleAuthorisedChange={handleAuthorisedChange} />} />
-            <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
-            <Route path='/product-details/:id' element={<ProductDetailsPage />} />
-            <Route path='/products/:categoryID' element={<ProductsPage categoriesArr={categoriesArr} categoriesTree={categoriesTree} />} />
-          </Routes>
-        </Col>
-      </main>
+      <Container fluid className='page d-flex flex-column'>
+        <div className='row'>
+          <Header currentUser={currentUser} logout={logout} />
+        </div>
+        <NavBar />
+        <div>
+          Visits: {visitCounter}
+        </div>
 
-      <Footer />
-    </Container>
+        <main className='row'>
+          <Col className='d-none d-lg-block' lg={2}>
+            <Sidebar categoriesTree={categoriesTree} />
+          </Col>
+          <Col lg={10} xs={12}>
+            <Routes>
+              <Route path='/' element={<HomePage currentUser={currentUser} />} />
+              <Route path='/login' element={<LoginPage handleAuthorisedChange={handleAuthorisedChange} />} />
+              <Route path='/register' element={<RegisterPage handleAuthorisedChange={handleAuthorisedChange} />} />
+              <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
+              <Route path='/product-details/:id' element={<ProductDetailsPage />} />
+              <Route path='/products/:categoryID' element={<ProductsPage categoriesArr={categoriesArr} categoriesTree={categoriesTree} />} />
+            </Routes>
+          </Col>
+        </main>
+
+        <Footer />
+      </Container>
+    </Context.Provider>
   );
 }
 
