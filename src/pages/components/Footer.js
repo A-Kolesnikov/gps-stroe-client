@@ -1,6 +1,7 @@
 import React from "react"
 import { Row, Col } from "react-bootstrap"
-import VisitCounter from "./VisitCounter"
+
+import SessionCounter from "./SessionCounter"
 
 function Footer() {
 
@@ -24,7 +25,7 @@ function Footer() {
                         &copy; Brightcode 2023 A.Kolesnikov
                     </Col>
                     <Col xs={1}>
-                        <VisitCounter/>
+                        <SessionCounter />
                     </Col>
                 </Row>
             </section>
