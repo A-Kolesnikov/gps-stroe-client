@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 
 import { UserContext } from "../hooks/contexts/userContext"
 
-function VisitCounter() {
+function SessionCounter() {
 
     const { visitCounter } = useContext(UserContext)
 
@@ -13,4 +13,4 @@ function VisitCounter() {
     )
 }
 
-export default VisitCounter
+export default SessionCounter
