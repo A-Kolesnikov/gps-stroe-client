@@ -9,7 +9,7 @@ import { collectChildrenIDs, defineSubTree } from "../service/treeOperations"
 
 const serverUrl = process.env.REACT_APP_SERVER_URL
 
-function ProductsPage({ categoriesArr, categoriesTree }) {
+function ProductsPage({ categoriesTree }) {
     const paramHook = useParams()
     const categoryID = parseInt(paramHook.categoryID)
     const singleRootCategoriesTree = { id: -1, name: 'All Categories', children: categoriesTree }
