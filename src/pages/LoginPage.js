@@ -8,7 +8,7 @@ import { validateLogin, validateEmail } from "../service/validationManager";
 
 import axios from "axios";
 
-function LoginPage({ handleAuthorisedChange, removeCookie, sessionCounter }) {
+function LoginPage({ handleAuthorisedChange, handleUserTrigger }) {
     const [formData, setFormData] = useState({ email: '', password: '' })
     const [errors, setErrors] = useState({})
     const [serverResponse, setServerResponse] = useState()
@@ -37,6 +37,7 @@ function LoginPage({ handleAuthorisedChange, removeCookie, sessionCounter }) {
             .then(result => {
                 if(!result.data.failure){   //refactor to response status check
                     handleAuthorisedChange(true)
+                    handleUserTrigger()
                     navigate('/')
                 } else {
                     setServerResponse(result.data?.failure)  //refactor to response status check
