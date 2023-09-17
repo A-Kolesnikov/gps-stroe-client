@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react"
+import { useNavigate } from "react-router-dom"
+import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "react-bootstrap"
 
-import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "react-bootstrap";
+import { UserContext } from "./hooks/contexts/userContext"
 
-import { useNavigate } from "react-router-dom";
+import { validateLogin, validateEmail } from "../service/validationManager"
 
-import { validateLogin, validateEmail } from "../service/validationManager";
+import axios from "axios"
+axios.defaults.withCredentials = true
+const serverUrl = process.env.REACT_APP_SERVER_URL
 
-import axios from "axios";
-
-function LoginPage({ handleAuthorisedChange, handleUserTrigger }) {
+function LoginPage() {
+    const { handleUserTrigger } = useContext(UserContext)
     const [formData, setFormData] = useState({ email: '', password: '' })
     const [errors, setErrors] = useState({})
     const [serverResponse, setServerResponse] = useState()
-
-    axios.defaults.withCredentials = true
 
     const navigate = useNavigate()
 
@@ -33,10 +34,9 @@ function LoginPage({ handleAuthorisedChange, handleUserTrigger }) {
         if (Object.keys(currentErrors).length > 0){
             return null
         } else {
-            axios.post('http://localhost:3100/users/login', formData)   //receiving user_token as response
+            axios.post(`${serverUrl}/users/login`, formData)   //receiving user_token as response
             .then(result => {
                 if(!result.data.failure){   //refactor to response status check
-                    handleAuthorisedChange(true)
                     handleUserTrigger()
                     navigate('/')
                 } else {
@@ -52,7 +52,7 @@ function LoginPage({ handleAuthorisedChange, handleUserTrigger }) {
         const currentErrors = validateEmail(formData.email)
         setErrors(currentErrors)
         if (!currentErrors.emailError){
-            axios.post(`http://localhost:3100/users/forgot-password`, {emailToReset: formData.email})
+            axios.post(`${serverUrl}/users/forgot-password`, {emailToReset: formData.email})
             .then(result => {
                 if (result.data.failure){   //refactor to response status check
                     setServerResponse(result.data.failure)
@@ -64,7 +64,6 @@ function LoginPage({ handleAuthorisedChange, handleUserTrigger }) {
         } else {
             return 0
         }
-
     }
 
     return (
@@ -83,7 +82,7 @@ function LoginPage({ handleAuthorisedChange, handleUserTrigger }) {
                                 defaultValue={formData.email}
                                 isInvalid={errors.emailError}
                                 onBlur={handleChange}
-                                autoComplete="current-email" //Should figure out how it works
+                                autoComplete="current-email"
                             />
                             <Form.Control.Feedback type="invalid">
                                 {errors.emailError}
@@ -102,7 +101,7 @@ function LoginPage({ handleAuthorisedChange, handleUserTrigger }) {
                                 defaultValue={formData.password}
                                 isInvalid={errors.passwordError}
                                 onBlur={handleChange}
-                                autoComplete="current-password" //Should figure out how it works
+                                autoComplete="current-password"
                             />
                             <Form.Control.Feedback type="invalid">
                                 {errors.passwordError}

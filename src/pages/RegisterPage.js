@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react"
+import { useNavigate } from "react-router-dom"
+import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "react-bootstrap"
 
-import { Container, Row, Col, Form, InputGroup, FormControl, Button } from "react-bootstrap";
+import { UserContext } from "./hooks/contexts/userContext"
 
-import { useNavigate } from "react-router-dom";
+import { validateRegister } from "../service/validationManager"
 
-import { validateRegister } from "../service/validationManager";
+import axios from "axios"
+axios.defaults.withCredentials = true
+const serverUrl = process.env.REACT_APP_SERVER_URL
 
-import axios from "axios";
-
-function RegisterPage({ handleAuthorisedChange }) {
+function RegisterPage() {
+    const { handleUserTrigger } = useContext(UserContext)
     const [formData, setFormData] = useState({email: '', password: '', name: '', telephone: ''})
     const [errors, setErrors] = useState({})
     const [serverResponse, setServerResponse] = useState()
@@ -31,10 +34,10 @@ function RegisterPage({ handleAuthorisedChange }) {
         if (Object.keys(currentErrors).length > 0){
             return null
         }else{
-            axios.post('http://localhost:3100/users/register', formData)     //receiving user_token as response
+            axios.post(`${serverUrl}/users/register`, formData)     //receiving user_token as response
             .then(result => {
                 if(!result.data.failure){   //refactor to response status check
-                    handleAuthorisedChange(true)
+                    handleUserTrigger()
                     console.log(`Registered succesfully! ${JSON.stringify(result.data)}`)
                     navigate('/')
                 } else {
@@ -61,7 +64,7 @@ function RegisterPage({ handleAuthorisedChange }) {
                                 defaultValue={formData.email}
                                 isInvalid={errors.emailError}
                                 onBlur={handleChange}
-                                autoComplete="current-email" //Should figure out how it works
+                                autoComplete="current-email" //Optimise autocomplete
                             />
                             <Form.Control.Feedback type="invalid">
                                 {errors.emailError}
@@ -79,7 +82,7 @@ function RegisterPage({ handleAuthorisedChange }) {
                                 defaultValue={formData.password}
                                 isInvalid={errors.passwordError}
                                 onBlur={handleChange}
-                                autoComplete="current-password" //Should figure out how it works
+                                autoComplete="current-password"
                             />
                             <Form.Control.Feedback type="invalid">
                                 {errors.passwordError}
@@ -97,7 +100,7 @@ function RegisterPage({ handleAuthorisedChange }) {
                                 defaultValue={formData.name}
                                 isInvalid={errors.nameError}
                                 onBlur={handleChange}
-                                autoComplete="current-name" //Should figure out how it works
+                                autoComplete="current-name"
                             />
                             <Form.Control.Feedback type="invalid">
                                 {errors.nameError}
@@ -114,7 +117,7 @@ function RegisterPage({ handleAuthorisedChange }) {
                                 placeholder="Enter your phone number"
                                 defaultValue={formData.telephone}
                                 onBlur={handleChange}
-                                autoComplete="current-username" //Should figure out how it works
+                                autoComplete="current-username"
                             />
                         </InputGroup>
                     </Form.Group>

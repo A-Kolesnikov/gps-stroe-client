@@ -1,6 +1,6 @@
-import React from "react";
-
-import { Row, Col } from "react-bootstrap";
+import React from "react"
+import { Row, Col } from "react-bootstrap"
+import VisitCounter from "./VisitCounter"
 
 function Footer() {
 
@@ -19,7 +19,14 @@ function Footer() {
                 </Col>
             </Row>
             <section>
-                <div>&copy; Brightcode 2023 A.Kolesnikov</div>
+                <Row>
+                    <Col xs={11}>
+                        &copy; Brightcode 2023 A.Kolesnikov
+                    </Col>
+                    <Col xs={1}>
+                        <VisitCounter/>
+                    </Col>
+                </Row>
             </section>
 
         </footer>

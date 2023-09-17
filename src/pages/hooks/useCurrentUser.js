@@ -31,14 +31,17 @@ export default function useCurrentUser(trigger, handleTrigger) {
 
     }, [trigger])
 
+
+    const currentCart = null
+    const currentWishList = null
+
     const logout = () => {
         axios.get(`${serverUrl}/users/logout`)
             .then(res => {
-                //handleAuthorisedChange(false)
                 handleTrigger()
             })
             .catch(err => console.log(err))
     }
 
-    return {currentUser, visitCounter, logout}
+    return { currentUser, visitCounter, currentCart, currentWishList, logout }
 }
