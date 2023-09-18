@@ -16,6 +16,7 @@ import RegisterPage from './pages/RegisterPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import ProductDetailsPage from './pages/ProductDetailsPage'
 import ProductsPage from './pages/ProductsPage'
+import CartPage from './pages/CartPage'
 
 import Header from './pages/components/Header'
 import NavBar from './pages/components/Navbar'
@@ -56,6 +57,7 @@ function App() {
               <Route path='/reset-password/:email/:token' element={<ResetPasswordPage />} />
               <Route path='/product-details/:id' element={<ProductDetailsPage />} />
               <Route path='/products/:categoryID' element={<ProductsPage categoriesTree={categoriesTree} />} />
+              <Route path='/cart' element = {<CartPage />} />
             </Routes>
           </Col>
         </main>
