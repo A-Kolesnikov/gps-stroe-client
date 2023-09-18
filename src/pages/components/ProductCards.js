@@ -1,9 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Link } from "react-router-dom"
 import { Button, Card, Col, Row } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faStar, faStarHalfStroke, faCheck, faXmark, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+import { faStar, faStarHalfStroke, faCheck, faXmark, faTriangleExclamation, faCartShopping } from "@fortawesome/free-solid-svg-icons"
 import { faStar as faRegularStar } from "@fortawesome/free-regular-svg-icons"
+
+import { UserContext } from "../hooks/contexts/userContext"
 
 //Defining common elements for all types of cards
 const currency = '€'
@@ -30,11 +32,22 @@ function createInStockIndicator(product) { //FIND WHY cursor-pointer DOESNT WORK
         )
     } else {
         return (
-            <Card.Text className="text-center mt-3 mb-1 cursor-pointer" title={`${product.units_in_stock} pcs`}>
+            <Card.Text className="text-center mt-1 mb-1 cursor-pointer" title={`${product.units_in_stock} pcs`}>
                 <FontAwesomeIcon icon={faTriangleExclamation} className="fa-lg text-warning" /> Last items in stock
             </Card.Text>
         )
     }
+}
+
+function createInCartIndicator (piecesInCart){
+    if(!piecesInCart){
+        return null
+    }
+    return(
+        <Card.Text className="text-end mt-3 mb-0 cursor-pointer">
+            <FontAwesomeIcon icon={faCartShopping} className="fa-sm" /> {`${piecesInCart}pcs`}
+        </Card.Text>
+    )
 }
 
 function createPriceStyling(product) {
@@ -60,7 +73,7 @@ function createRatingIndicator(product) {
         indicator = [],
         comment = null
     if (!product.rating) {
-        while (cnt > 0){
+        while (cnt > 0) {
             indicator.push(<FontAwesomeIcon key={`${product.id}${cnt}`} icon={faRegularStar} className="fa-xs text-secondary" />)
             cnt--
         }
@@ -82,7 +95,7 @@ function createRatingIndicator(product) {
         }
     }
     return (
-        <Col className="mx-2 px-2 text-end" style={{fontSize:"smaller"}}>
+        <Col className="mx-2 px-2 text-end" style={{ fontSize: "smaller" }}>
             {comment}{indicator}
         </Col>
     )
@@ -90,12 +103,18 @@ function createRatingIndicator(product) {
 
 export function ProductCardVertical({ product }) {
 
+    const { currentCart, handleCartTrigger } = useContext(UserContext)
+    const isInCart = currentCart?.find(item => item.product_id == product.id)
+    const piecesInCart = !isInCart ? 0 : isInCart.quantity
+
     const imageUrl = `../${product.main_image}` /*?w=100&h=180*/ /* /100px180 */ /*not working sizing of ReactBootstrap*/
     const cardHeader = createCardHeader(product)
     const priceStyling = createPriceStyling(product)
     const inStcokIndicator = createInStockIndicator(product)
     const buttons = createButtons(product)
     const ratingIndicator = createRatingIndicator(product)
+    const inCartIndicator = createInCartIndicator(piecesInCart)
+
 
     return (
         <Card className="h-100"> {/*h-100 - to make cards in a row of a same hight*/}
@@ -131,6 +150,7 @@ export function ProductCardVertical({ product }) {
 
                 <Row className="className=mt-auto"> {/*className=mt-auto - to make buttons stay at the bottom*/}
 
+                    {inCartIndicator}
                     {inStcokIndicator}
                     <Card.Text className="mb-2 text-center">
                         <span style={{ color: "red", fontSize: "x-large", textDecoration: "line-through" }}>
@@ -142,7 +162,13 @@ export function ProductCardVertical({ product }) {
                     </Card.Text>
                 </Row>
 
-                {buttons}
+                {/*buttons*/}
+                <div className="d-grid gap-2">
+                    {(product.units_in_stock > 0 && product.units_in_stock > piecesInCart) ?
+                        <Button onClick={() => handleCartTrigger('add', product.id)} as={Col} variant="primary" disabled>Add to cart</Button> :
+                        <Button as={Col} variant="secondary" active>No enough items to add</Button>} {/*className="mb-4 mx-2" */}
+                    <Button as={Col} variant="secondary">Add to wishlist</Button>
+                </div>
             </Card.Body>
         </Card>
     )
@@ -150,12 +176,17 @@ export function ProductCardVertical({ product }) {
 
 export function ProductCardHorizontal({ product }) {
 
+    const { currentCart, handleCartTrigger } = useContext(UserContext)
+    const isInCart = currentCart?.find(item => item.product_id == product.id)
+    const piecesInCart = !isInCart ? 0 : isInCart.quantity
+
     const imageUrl = `../${product.main_image}` /*?w=100&h=180*/ /* /100px180 */ /*not working sizing of ReactBootstrap*/
     const cardHeader = createCardHeader(product)
     const priceStyling = createPriceStyling(product)
     const inStcokIndicator = createInStockIndicator(product)
     const buttons = createButtons(product)
     const ratingIndicator = createRatingIndicator(product)
+    const inCartIndicator = createInCartIndicator(piecesInCart)
 
     return (
         <Card className="h-100"> {/*h-100 - to make cards in a row of a same hight*/}
@@ -178,11 +209,11 @@ export function ProductCardHorizontal({ product }) {
                                             title={product.name}>
                                             {product.name}
                                         </Card.Title>
-                                        <Row  className="align-items-center">
+                                        <Row className="align-items-center">
                                             <Col>
-                                        <Card.Subtitle>{`Reference: ${product.reference}`}</Card.Subtitle>
+                                                <Card.Subtitle>{`Reference: ${product.reference}`}</Card.Subtitle>
                                             </Col>
-                                        {ratingIndicator}
+                                            {ratingIndicator}
                                         </Row>
                                         <Card.Text
                                             className="overflow-hidden ellipsis" /*WHY ELLIPSIS NOT WORKING HERE??!!*/
@@ -196,6 +227,7 @@ export function ProductCardHorizontal({ product }) {
 
                             <Col xs={4}>
                                 <Row > {/*className=mt-auto - to make buttons stay at the bottom*/}
+                                    {inCartIndicator}
                                     {inStcokIndicator}
                                     <Card.Text className="mb-2 text-center">
                                         <span style={{ color: "red", fontSize: "x-large", textDecoration: "line-through" }}>
@@ -206,7 +238,14 @@ export function ProductCardHorizontal({ product }) {
                                         </span>
                                     </Card.Text>
                                 </Row>
-                                {buttons}
+
+                                {/*buttons*/}
+                                <div className="d-grid gap-2">
+                                    {(product.units_in_stock > 0 && product.units_in_stock > piecesInCart) ?
+                                        <Button onClick={() => handleCartTrigger('add', product.id)} as={Col} variant="primary" disabled>Add to cart</Button> :
+                                        <Button as={Col} variant="secondary" active>No enough to add</Button>} {/*className="mb-4 mx-2" */}
+                                    <Button as={Col} variant="secondary">Add to wishlist</Button>
+                                </div>
                             </Col>
                         </Row>
 

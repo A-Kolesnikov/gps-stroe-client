@@ -1,7 +1,8 @@
-import React, { createContext, useState } from "react"
+import React, { createContext, useState, useEffect } from "react"
 
 import useFetch from "../useFetch"
 import useCurrentUser from "../useCurrentUser"
+import useCart from "../useCart"
 
 export const UserContext = createContext(null)
 
@@ -14,20 +15,32 @@ export default function UserContextProvider({ children }) {
     const handleUserTrigger = () => {
         setUserTrigger(prevStatus => !prevStatus)
     }
-    const { currentUser, visitCounter, currentWishList, currentCart, logout } = useCurrentUser(userTrigger, handleUserTrigger)
+    const { currentUser, visitCounter, currentWishList, logout } = useCurrentUser(userTrigger, handleUserTrigger)
 
     //Cart details
-    /*const [cartMode, setCartMode] = useState({url: !currentUser ? null : `/by-user/${currentUser.id}`, method:'GET', requestBody: null})
-    useEffect(()=>{
 
-    }, [currentUser])
+    const [cartTrigger, setCartTrigger] = useState(false)
+    const [cartSettings, setCartSettings] = useState({action: "show", product_id: null, quantity: 1})
 
-    const finalUrl = !currentUser ? null : `${serverUrl}${cartMode.url}`
-    const { data: currentCart, error: cartError, loading: cartLoading } = useFetch(finalUrl, cartMode.method, cartMode.requestBody)
-    console.log(finalUrl, currentCart)*/
+    const  { data: currentCart, error: cartError } = useCart(cartTrigger, currentUser, cartSettings.action, cartSettings.product_id, cartSettings.quantity)
+    if(cartError){
+        console.error(cartError)
+    }
+
+    const handleCartTrigger = (action = "show", product_id = null, quantity = 1) => {
+        const newCartSettings = {
+            ...cartSettings,
+            action: action,
+            product_id: product_id,
+            quantity: quantity,
+        }
+        setCartSettings(newCartSettings)
+        setCartTrigger(prevStatus => !prevStatus)
+    }
+    console.log(currentCart)
 
     return (
-        <UserContext.Provider value={{ currentUser, visitCounter, currentCart, currentWishList, logout, handleUserTrigger }}>
+        <UserContext.Provider value={{ currentUser, visitCounter, currentCart, currentWishList, logout, handleUserTrigger, handleCartTrigger }}>
             {children}
         </UserContext.Provider>
     )

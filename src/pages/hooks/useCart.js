@@ -3,16 +3,16 @@ import axios from "axios"
 axios.defaults.withCredentials = true
 const serverUrl = process.env.REACT_APP_SERVER_URL
 
-export default function useCart(currentUser = null, action = "show", product_id = null, quantity = 1) {
+export default function useCart(trigger, currentUser = null, action = "show", product_id = null, quantity = 1) {
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const controller = new AbortController() //prevents unstable behavior during fast multiple recall
-        
+        const axiosConfig = { method: 'GET', url: null, data: null }
         async function fetchData() {
-            const axiosConfig = { method: 'GET', url: null, data: null }
+            
             (() => {    //change default axios settings due to action type
                 if (!currentUser) {
                     return
@@ -31,7 +31,7 @@ export default function useCart(currentUser = null, action = "show", product_id 
                 }
             })()
             try {
-                const response = !url ? { data: null } : await axios(axiosConfig)//.get(url)
+                const response = !axiosConfig.url ? { data: null } : await axios(axiosConfig)//.get(url)
                 setData(response.data)
             } catch (err) {
                 setError(err)
@@ -42,6 +42,6 @@ export default function useCart(currentUser = null, action = "show", product_id 
         fetchData()
 
         return () => controller.abort() //cleanUp function - runs when component is unmount
-    }, [url, method, requestBody])
+    }, [trigger, currentUser])
     return { data, error, loading }
 }
