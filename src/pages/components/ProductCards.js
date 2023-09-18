@@ -166,7 +166,7 @@ export function ProductCardVertical({ product }) {
                 <div className="d-grid gap-2">
                     {(product.units_in_stock > 0 && product.units_in_stock > piecesInCart) ?
                         <Button onClick={() => handleCartTrigger('add', product.id)} as={Col} variant="primary" disabled>Add to cart</Button> :
-                        <Button as={Col} variant="secondary" active>No enough items to add</Button>} {/*className="mb-4 mx-2" */}
+                        <Button as={Col} variant="secondary" active>Not enough items</Button>} {/*className="mb-4 mx-2" */}
                     <Button as={Col} variant="secondary">Add to wishlist</Button>
                 </div>
             </Card.Body>
@@ -243,7 +243,7 @@ export function ProductCardHorizontal({ product }) {
                                 <div className="d-grid gap-2">
                                     {(product.units_in_stock > 0 && product.units_in_stock > piecesInCart) ?
                                         <Button onClick={() => handleCartTrigger('add', product.id)} as={Col} variant="primary" disabled>Add to cart</Button> :
-                                        <Button as={Col} variant="secondary" active>No enough to add</Button>} {/*className="mb-4 mx-2" */}
+                                        <Button as={Col} variant="secondary" active>Not enough items</Button>} {/*className="mb-4 mx-2" */}
                                     <Button as={Col} variant="secondary">Add to wishlist</Button>
                                 </div>
                             </Col>
@@ -255,6 +255,8 @@ export function ProductCardHorizontal({ product }) {
         </Card>
     )
 }
+
+
 
 export function ProductCardAdaptive({ product }) { //not finished
 

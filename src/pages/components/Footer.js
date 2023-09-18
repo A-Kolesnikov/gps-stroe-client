@@ -13,6 +13,9 @@ function Footer() {
                         Contacts
                     </section>
                 </Col>
+                <Col xs={3} lg={1}>
+                    <SessionCounter />
+                </Col>
                 <Col>
                     <section>
                         About us
@@ -23,9 +26,6 @@ function Footer() {
                 <Row>
                     <Col xs={11}>
                         &copy; Brightcode 2023 A.Kolesnikov
-                    </Col>
-                    <Col xs={1}>
-                        <SessionCounter />
                     </Col>
                 </Row>
             </section>

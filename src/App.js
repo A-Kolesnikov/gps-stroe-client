@@ -43,7 +43,7 @@ function App() {
         <div className='row'>
           <Header /> {/*currentUser={currentUser} logout={logout} */}
         </div>
-        <NavBar />
+        <NavBar categoriesTree={categoriesTree} />
 
         <main className='row'>
           <Col className='d-none d-lg-block' lg={2}>
