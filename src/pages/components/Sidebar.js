@@ -23,7 +23,7 @@ function Sidebar({ categoriesTree }) {
         return (
             <Container fluid>
 
-                {!categoriesTree ? <h5>Loading...</h5> : <CollapsableTree data={categoriesTree} parrentName={'Categories'} />}
+                {!categoriesTree ? <h5>Loading...</h5> : <CollapsableTree data={categoriesTree} parrentName={'Categories'} scheme={'w'} />}
             </Container>
         )
     } else return <></>

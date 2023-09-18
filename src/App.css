@@ -62,3 +62,9 @@ footer{
   border-bottom: 1px grey solid;
 }
 
+.withBackground{
+  background-image: url(../public/media/logo-03.jpg);
+  background-size: 150px;
+  background-repeat: no-repeat; /* Prevent background image from repeating */
+  background-position: left center;
+}

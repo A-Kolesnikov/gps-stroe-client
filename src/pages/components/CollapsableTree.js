@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCaretRight, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 
-function TreeNode({ data }) {
+function TreeNode({ data, scheme }) {
     const [isCollapsed, setCollapsed] = useState(true)
     const toggleCollapse = () => {
         setCollapsed(prevIsCollapsed => !prevIsCollapsed)
@@ -14,7 +14,7 @@ function TreeNode({ data }) {
 
             <Row className="tree-node px-0 pb-1 my-2">
                 <Col className="gx-0 text-xl d-flex" style={{ fontSize: 'large' }}>
-                    <Link to={`/products/${data.id}`} className="blackTextLink">    {/*Specific for categories tree*/}
+                    <Link to={`/products/${data.id}`} className={scheme === 'b' ? 'whiteTextLink': 'blackTextLink'}>    {/*Specific for categories tree*/}
                         {data.name}
                     </Link>
                 </Col>
@@ -31,7 +31,7 @@ function TreeNode({ data }) {
                                 <Col style={{ marginLeft: 'auto' }} className="gx-1" xs={1}>
                                 </Col>
                                 <Col xs={11}>
-                                    <TreeNode key={child.id} data={child} />
+                                    <TreeNode key={child.id} data={child} scheme={scheme} />
                                 </Col>
                         </Row>
                     ))}
@@ -42,14 +42,14 @@ function TreeNode({ data }) {
     )
 }
 
-export default function CollapsableTree({ data, parrentName = null }) {
+export default function CollapsableTree({ data, parrentName = null, scheme }) {
     if (parrentName) {
         data = [{id: -1, name: parrentName, children: data}]
     } 
     return (
         <Container className="px-0" fluid>
             {data.map((item) => (
-                <TreeNode key={`collapsable${item.id}`} data={item} />
+                <TreeNode key={`collapsable${item.id}`} data={item} scheme={scheme} />
             ))}
         </Container>
     )

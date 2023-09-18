@@ -28,6 +28,7 @@ function Header() {
     return (
         <header className="container-fluid">
             <Row className="d-flex justify-content-between">
+                <Col lg={2} className="withBackground d-none d-lg-block"></Col>
                 <Col  className="p-3 text-uppercase fs-2">
                     Welcome to GPS-store{currentUser ? `, ${currentUser.name}!` : "!"}
                 </Col>
