@@ -8,7 +8,7 @@ import axios from 'axios'
 import Cookies from 'js-cookie' //npm i js-cookie
 
 import Context from './pages/hooks/contexts/Context'
-import UserContextProvider, { UserContext } from './pages/hooks/contexts/userContext';
+import UserContextProvider, { UserContext } from './pages/hooks/contexts/userContext'
 
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
