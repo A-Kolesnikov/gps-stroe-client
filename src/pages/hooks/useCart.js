@@ -28,6 +28,23 @@ export default function useCart(trigger, currentUser = null, action = "show", pr
                         "quantity": quantity
                     }
                     return
+                } else if (action === 'reduce') {
+                    axiosConfig.method = 'POST'
+                    axiosConfig.url = `${serverUrl}/cart/reduce-product`
+                    axiosConfig.data = {
+                        "user_id": currentUser.id,
+                        "product_id": product_id,
+                        "quantity": quantity
+                    }
+                    return
+                } else if (action === 'delete') {
+                    axiosConfig.method = 'POST'
+                    axiosConfig.url = `${serverUrl}/cart/delete-product`
+                    axiosConfig.data = {
+                        "user_id": currentUser.id,
+                        "product_id": product_id,
+                    }
+                    return
                 }
             })()
             try {
