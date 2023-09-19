@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import { Link } from "react-router-dom"
 import { Button, Card, Col, Row } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faStar, faStarHalfStroke, faCheck, faXmark, faTriangleExclamation, faCartShopping } from "@fortawesome/free-solid-svg-icons"
+import { faStar, faStarHalfStroke, faCheck, faXmark, faTriangleExclamation, faCartShopping, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { faStar as faRegularStar } from "@fortawesome/free-regular-svg-icons"
 
 import { UserContext } from "../hooks/contexts/userContext"
@@ -326,7 +326,10 @@ export function ProductCardInCart({ product }) {
                                     {(product.units_in_stock > 0 && product.units_in_stock > piecesInCart) ?
                                         <Button onClick={() => handleCartTrigger('add', product.id)} as={Col} variant="success" disabled>+</Button> :
                                         <Button as={Col} variant="secondary" active>+</Button>} {/*className="mb-4 mx-2" */}
-                                    <Button as={Col} variant="primary">-</Button>
+                                    <Button onClick={() => handleCartTrigger('reduce', product.id)} as={Col} variant="primary">-</Button>
+                                    <Button onClick={() => handleCartTrigger('delete', product.id)} as={Col} variant="danger">
+                                    <FontAwesomeIcon icon={faTrash} />
+                                    </Button>
                                 </div>
                             </Col>
                         </Row>
