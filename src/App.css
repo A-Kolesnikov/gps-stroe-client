@@ -68,3 +68,17 @@ footer{
   background-repeat: no-repeat; /* Prevent background image from repeating */
   background-position: left center;
 }
+
+.itemInCheckout {
+  flex: 1;
+  text-align: left;
+}
+.dotted-line {
+  border-bottom: 1px dashed #000;
+  flex: 0 1 10px; /* Adjust the width of the line as needed */
+  margin: 0 10px; /* Adjust the margin as needed */
+}
+.priceInCheckout {
+  flex: 1;
+  text-align: right;
+}
