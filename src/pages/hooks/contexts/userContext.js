@@ -37,7 +37,6 @@ export default function UserContextProvider({ children }) {
         setCartSettings(newCartSettings)
         setCartTrigger(prevStatus => !prevStatus)
     }
-    console.log(currentCart)
 
     return (
         <UserContext.Provider value={{ currentUser, visitCounter, currentCart, currentWishList, logout, handleUserTrigger, handleCartTrigger }}>
