@@ -25,7 +25,7 @@ export default function useFetch(url=null, method="GET", requestBody = null) {
                 setLoading(false)
             }
         }  //Could use IIFE here (async function(){})(), but it leads to error with AbortController
-        setTimeout(()=>fetchData(), 800) //FOR DEBUGGING - IMITATES DELAY OF SERVER RESPONSE
+        setTimeout(()=>fetchData(), 500) //FOR DEBUGGING - IMITATES DELAY OF SERVER RESPONSE
 
         return () => controller.abort() //cleanUp function - runs when component is unmount
     }, [url, method, requestBody])

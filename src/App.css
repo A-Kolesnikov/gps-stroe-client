@@ -82,3 +82,14 @@ footer{
   flex: 1;
   text-align: right;
 }
+
+.shaded-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2); /* Adjust opacity as needed */
+  pointer-events: none; /* Allows interaction with elements behind the overlay */
+  z-index: 1; /* Ensure the overlay is above the card content */
+}

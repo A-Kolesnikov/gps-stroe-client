@@ -39,11 +39,11 @@ function createInStockIndicator(product) { //FIND WHY cursor-pointer DOESNT WORK
     }
 }
 
-function createInCartIndicator (piecesInCart){
-    if(!piecesInCart){
+function createInCartIndicator(piecesInCart) {
+    if (!piecesInCart) {
         return null
     }
-    return(
+    return (
         <Card.Text className="text-end mt-3 mb-0 cursor-pointer">
             <FontAwesomeIcon icon={faCartShopping} className="fa-sm" /> {`${piecesInCart}pcs`}
         </Card.Text>
@@ -271,7 +271,8 @@ export function ProductCardInCart({ product }) {
     const inCartIndicator = createInCartIndicator(piecesInCart)
 
     return (
-        <Card className="h-100"> {/*h-100 - to make cards in a row of a same hight*/}
+        <Card className="h-100 inactieCard"> {/*h-100 - to make cards in a row of a same hight*/}
+            {(isInCart?.quantity > product.units_in_stock) ? <div className="shaded-overlay"></div> : null}
             <Row className="gx-2"> {/*to avoid appearance horizontal scrolling when zoomed by hover*/}
                 <Col xs={2}>
                     {cardHeader}
@@ -328,7 +329,7 @@ export function ProductCardInCart({ product }) {
                                         <Button as={Col} variant="secondary" active>+</Button>} {/*className="mb-4 mx-2" */}
                                     <Button onClick={() => handleCartTrigger('reduce', product.id)} as={Col} variant="primary">-</Button>
                                     <Button onClick={() => handleCartTrigger('delete', product.id)} as={Col} variant="danger">
-                                    <FontAwesomeIcon icon={faTrash} />
+                                        <FontAwesomeIcon icon={faTrash} />
                                     </Button>
                                 </div>
                             </Col>
