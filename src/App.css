@@ -93,3 +93,7 @@ footer{
   pointer-events: none; /* Allows interaction with elements behind the overlay */
   z-index: 1; /* Ensure the overlay is above the card content */
 }
+
+.logo-size {
+  width: 80px;
+}

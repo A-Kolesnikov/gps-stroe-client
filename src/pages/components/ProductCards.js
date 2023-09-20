@@ -328,7 +328,7 @@ export function ProductCardInCart({ product }) {
                                         <Button onClick={() => handleCartTrigger('add', product.id)} as={Col} variant="success" disabled>+</Button> :
                                         <Button as={Col} variant="secondary" active>+</Button>} {/*className="mb-4 mx-2" */}
                                     <Button onClick={() => handleCartTrigger('reduce', product.id)} as={Col} variant="primary">-</Button>
-                                    <Button onClick={() => handleCartTrigger('delete', product.id)} as={Col} variant="danger">
+                                    <Button onClick={() => handleCartTrigger('delete', product.id)} as={Col} variant="light">
                                         <FontAwesomeIcon icon={faTrash} />
                                     </Button>
                                 </div>
