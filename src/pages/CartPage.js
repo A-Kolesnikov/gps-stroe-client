@@ -5,6 +5,7 @@ import { UserContext } from "./hooks/contexts/userContext"
 import useFetch from "./hooks/useFetch"
 
 import { ProductCardInCart, ProductCardHorizontal } from "./components/ProductCards"
+import createOrder from "../service/DAL/createOrder"
 
 const serverUrl = process.env.REACT_APP_SERVER_URL
 const currency = '€'
@@ -53,6 +54,16 @@ function CartPage() {
         }, 0)
         return (result.toFixed(2))
     })()
+
+    const handleClick = async ()=>{
+        try{
+            await createOrder(currentUser.id, totalPrice, orderList)
+            handleCartTrigger()
+            console.log ('success')
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     return (
         <Container>
@@ -107,7 +118,7 @@ function CartPage() {
                     <Row className="my-3 d-flex justify-content-center">
                         {
                             (!unavailableProducts[0]) ?
-                                <Button as={Col} xs={8} lg={5} xxl={3}>Checkout</Button> :
+                                <Button onClick={handleClick} as={Col} xs={8} lg={5} xxl={3}>Checkout</Button> :
                                 <Col>
                                     Sorry! Not all items are available in the required quantity at the moment. To continue, please consider removing items from your cart or reducing the quantity of:
                                     <ul>
