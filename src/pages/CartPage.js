@@ -11,7 +11,7 @@ const serverUrl = process.env.REACT_APP_SERVER_URL
 const currency = '€'
 
 function CartPage() {
-    const { currentUser, currentCart, handleCartTrigger } = useContext(UserContext)
+    const { currentUser, currentCart, handleCartTrigger, handleOrdersTrigger } = useContext(UserContext)
 
     const productsURL = (() => {
         if (!currentCart || !currentCart[0]) return null
@@ -59,7 +59,7 @@ function CartPage() {
         try{
             await createOrder(currentUser.id, totalPrice, orderList)
             handleCartTrigger()
-            console.log ('success')
+            handleOrdersTrigger()
         } catch (err) {
             console.error(err)
         }

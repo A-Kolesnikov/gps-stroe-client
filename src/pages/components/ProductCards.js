@@ -129,7 +129,7 @@ export function ProductCardVertical({ product }) {
                     <Link to={`/product-details/${product.id}`} className="blackTextLink">
                         <Card.Title
                             className="text-xl overflow-hidden"
-                            style={{ maxHeight: "5.5rem" }}
+                            style={{ maxHeight: "5rem" }}
                             title={product.name}>
                             {product.name}
                         </Card.Title>
@@ -167,7 +167,7 @@ export function ProductCardVertical({ product }) {
                     {(product.units_in_stock > 0 && product.units_in_stock > piecesInCart) ?
                         <Button onClick={() => handleCartTrigger('add', product.id)} as={Col} variant="primary" disabled>Add to cart</Button> :
                         <Button as={Col} variant="secondary" active>Not enough items</Button>} {/*className="mb-4 mx-2" */}
-                    <Button as={Col} variant="secondary">Add to wishlist</Button>
+                    {/*<Button as={Col} variant="secondary">Add to wishlist</Button>*/}
                 </div>
             </Card.Body>
         </Card>
@@ -205,7 +205,7 @@ export function ProductCardHorizontal({ product }) {
                                     <Link to={`/product-details/${product.id}`} style={{ textDecoration: "none", color: "black" }}>
                                         <Card.Title
                                             className="overflow-hidden  ellipsis"
-                                            style={{ maxHeight: "5.5rem" }}
+                                            style={{ maxHeight: "5rem" }}
                                             title={product.name}>
                                             {product.name}
                                         </Card.Title>
@@ -244,7 +244,7 @@ export function ProductCardHorizontal({ product }) {
                                     {(product.units_in_stock > 0 && product.units_in_stock > piecesInCart) ?
                                         <Button onClick={() => handleCartTrigger('add', product.id)} as={Col} variant="primary" disabled>Add to cart</Button> :
                                         <Button as={Col} variant="secondary" active>Not enough items</Button>} {/*className="mb-4 mx-2" */}
-                                    <Button as={Col} variant="secondary">Add to wishlist</Button>
+                                    {/*<Button as={Col} variant="secondary">Add to wishlist</Button>*/}
                                 </div>
                             </Col>
                         </Row>
