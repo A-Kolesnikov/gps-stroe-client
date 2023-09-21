@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 axios.defaults.withCredentials = true
 
-export default function useFetch(url=null, method="GET", requestBody = null) {
+export default function useFetch(url=null, method="GET", requestBody = null, trigger) {
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -29,6 +29,6 @@ export default function useFetch(url=null, method="GET", requestBody = null) {
         fetchData()
 
         return () => controller.abort() //cleanUp function - runs when component is unmount
-    }, [url, method, requestBody])
+    }, [url, method, requestBody, trigger])
     return {data, error, loading}
 }

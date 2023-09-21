@@ -22,7 +22,7 @@ export default function UserContextProvider({ children }) {
     const [cartTrigger, setCartTrigger] = useState(false)
     const [cartSettings, setCartSettings] = useState({action: "show", product_id: null, quantity: 1})
 
-    const  { data: currentCart, error: cartError } = useCart(cartTrigger, currentUser, cartSettings.action, cartSettings.product_id, cartSettings.quantity)
+    const { data: currentCart, error: cartError } = useCart(cartTrigger, currentUser, cartSettings.action, cartSettings.product_id, cartSettings.quantity)
     if(cartError){
         console.error(cartError)
     }
@@ -38,8 +38,16 @@ export default function UserContextProvider({ children }) {
         setCartTrigger(prevStatus => !prevStatus)
     }
 
+    const [ordersTrigger, setOrdersTrigger] = useState(false)
+    const handleOrdersTrigger = () => {
+        setOrdersTrigger(prevStatus => !prevStatus)
+    }
+
+    const { data: currentOrders, error: currentOrdersError} = useFetch(`${serverUrl}/orders/by-user/${currentUser?.id}, 'GET`, null, ordersTrigger)
+    console.log(currentOrders)
+
     return (
-        <UserContext.Provider value={{ currentUser, visitCounter, currentCart, currentWishList, logout, handleUserTrigger, handleCartTrigger }}>
+        <UserContext.Provider value={{ currentUser, visitCounter, currentCart, currentWishList, logout, handleUserTrigger, handleCartTrigger, handleOrdersTrigger }}>
             {children}
         </UserContext.Provider>
     )
