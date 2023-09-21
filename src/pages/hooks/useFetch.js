@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 axios.defaults.withCredentials = true
 
-export default function useFetch(url=null, method="GET", requestBody = null, trigger) {
+export default function useFetch(url=null, method="GET", requestBody = null, trigger = null) {
     const [data, setData] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)

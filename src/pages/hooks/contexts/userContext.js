@@ -42,12 +42,14 @@ export default function UserContextProvider({ children }) {
     const handleOrdersTrigger = () => {
         setOrdersTrigger(prevStatus => !prevStatus)
     }
+    useEffect(()=>{
+        handleOrdersTrigger()
+    },[currentUser])
 
     const { data: currentOrders, error: currentOrdersError} = useFetch(`${serverUrl}/orders/by-user/${currentUser?.id}, 'GET`, null, ordersTrigger)
     console.log(currentOrders)
-
     return (
-        <UserContext.Provider value={{ currentUser, visitCounter, currentCart, currentWishList, logout, handleUserTrigger, handleCartTrigger, handleOrdersTrigger }}>
+        <UserContext.Provider value={{ currentUser, visitCounter, currentCart, currentWishList, currentOrders, logout, handleUserTrigger, handleCartTrigger, handleOrdersTrigger }}>
             {children}
         </UserContext.Provider>
     )
