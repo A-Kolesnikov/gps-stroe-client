@@ -11,7 +11,7 @@ axios.defaults.withCredentials = true
 const serverUrl = process.env.REACT_APP_SERVER_URL
 
 function LoginPage() {
-    const { handleUserTrigger } = useContext(UserContext)
+    const { handleUserTrigger, handleOrdersTrigger } = useContext(UserContext)
     const [formData, setFormData] = useState({ email: '', password: '' })
     const [errors, setErrors] = useState({})
     const [serverResponse, setServerResponse] = useState()
@@ -38,6 +38,7 @@ function LoginPage() {
             .then(result => {
                 if(!result.data.failure){   //refactor to response status check
                     handleUserTrigger()
+                    //handleOrdersTrigger()
                     navigate('/')
                 } else {
                     setServerResponse(result.data?.failure)  //refactor to response status check

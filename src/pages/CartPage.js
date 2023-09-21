@@ -4,7 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap"
 import { UserContext } from "./hooks/contexts/userContext"
 import useFetch from "./hooks/useFetch"
 
-import { ProductCardInCart, ProductCardHorizontal } from "./components/ProductCards"
+import { ProductCardInCart } from "./components/ProductCards"
 import createOrder from "../service/DAL/createOrder"
 
 const serverUrl = process.env.REACT_APP_SERVER_URL

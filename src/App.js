@@ -17,6 +17,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage'
 import ProductDetailsPage from './pages/ProductDetailsPage'
 import ProductsPage from './pages/ProductsPage'
 import CartPage from './pages/CartPage'
+import UserPage from './pages/UserPage'
 
 import Header from './pages/components/Header'
 import NavBar from './pages/components/Navbar'
@@ -58,6 +59,7 @@ function App() {
               <Route path='/product-details/:id' element={<ProductDetailsPage />} />
               <Route path='/products/:categoryID' element={<ProductsPage categoriesTree={categoriesTree} />} />
               <Route path='/cart' element = {<CartPage />} />
+              <Route path='/user' element = {<UserPage />} />
             </Routes>
           </Col>
         </main>

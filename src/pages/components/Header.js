@@ -15,7 +15,7 @@ function Header() {
         if (currentUser) /*(Object.keys(currentUser).length > 0)*/ {
             userSection = <Col className="d-flex justify-content-end align-items-center">
                 <Button onClick={() => logout()} className="px-2 m-2 mt-3">Logout</Button>
-                <Button className="px-2 m-2 mt-3">User details</Button>
+                <Button onClick={() => navigate('/user')} className="px-2 m-2 mt-3">User details</Button>
             </Col>
         } else {
             userSection = <Col className="d-flex justify-content-end align-items-center">
