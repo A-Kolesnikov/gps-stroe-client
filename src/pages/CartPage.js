@@ -4,6 +4,8 @@ import { Container, Row, Col, Button } from "react-bootstrap"
 import { UserContext } from "./hooks/contexts/userContext"
 import useFetch from "./hooks/useFetch"
 
+import { useNavigate } from "react-router-dom"
+
 import { ProductCardInCart } from "./components/ProductCards"
 import createOrder from "../service/DAL/createOrder"
 
@@ -11,6 +13,8 @@ const serverUrl = process.env.REACT_APP_SERVER_URL
 const currency = '€'
 
 function CartPage() {
+
+    const navigate = useNavigate()
     const { currentUser, currentCart, handleCartTrigger, handleOrdersTrigger } = useContext(UserContext)
 
     const productsURL = (() => {
@@ -60,6 +64,7 @@ function CartPage() {
             await createOrder(currentUser.id, totalPrice, orderList)
             handleCartTrigger()
             handleOrdersTrigger()
+            navigate('/user')
         } catch (err) {
             console.error(err)
         }
