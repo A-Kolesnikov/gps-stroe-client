@@ -116,7 +116,7 @@ function LoginPage() {
                 <Row className="justify-content-center mt-1">
                     <Col className="text-center" xs md="2">{serverResponse}</Col>
                 </Row>
-                <Row className="justify-content-center mt-5">
+                <Row className="justify-content-center mt-5 mb-5">
                     <Button onClick={resetPassword} as={Col} xs md="2" variant="secondary">Reset password</Button>
                 </Row>
             </Form>

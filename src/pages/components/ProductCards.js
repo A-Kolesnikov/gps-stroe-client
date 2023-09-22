@@ -4,6 +4,7 @@ import { Button, Card, Col, Row } from "react-bootstrap"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faStar, faStarHalfStroke, faCheck, faXmark, faTriangleExclamation, faCartShopping, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { faStar as faRegularStar } from "@fortawesome/free-regular-svg-icons"
+import { useNavigate } from "react-router-dom"
 
 import { UserContext } from "../hooks/contexts/userContext"
 
@@ -103,7 +104,9 @@ function createRatingIndicator(product) {
 
 export function ProductCardVertical({ product }) {
 
-    const { currentCart, handleCartTrigger } = useContext(UserContext)
+    const navigate = useNavigate()
+
+    const { currentUser, currentCart, handleCartTrigger } = useContext(UserContext)
     const isInCart = currentCart?.find(item => item.product_id == product.id)
     const piecesInCart = !isInCart ? 0 : isInCart.quantity
 
@@ -176,7 +179,9 @@ export function ProductCardVertical({ product }) {
 
 export function ProductCardHorizontal({ product }) {
 
-    const { currentCart, handleCartTrigger } = useContext(UserContext)
+    const navigate = useNavigate()
+
+    const { currentUser, currentCart, handleCartTrigger } = useContext(UserContext)
     const isInCart = currentCart?.find(item => item.product_id == product.id)
     const piecesInCart = !isInCart ? 0 : isInCart.quantity
 
