@@ -20,13 +20,13 @@ function CartPage() {
     const productsURL = (() => {
         if (!currentCart || !currentCart[0]) return null
         return (
-            `${serverUrl}/products/with-ids/${currentCart.map(item => item.product_id).join(',')}`
+            `${serverUrl}/products/with-ids/${currentCart.map(item => item.product_id).join(',')}` //Here cart is mapped with id of product which had been deleted?
         )
     })()
 
     const { data: products, error: productsError, loading: productsLoading } = useFetch(productsURL)
     if (productsError) {
-        console.log(productsError)
+        console.error(productsError)
     }
 
     const [orderList, setOrderList] = useState([])
@@ -37,10 +37,10 @@ function CartPage() {
             const result = products.map((product) => {
                 const cartItem = currentCart.find((item) => item.product_id === product.id)
                 if (cartItem) {
-                    if (cartItem.quantity > product.units_in_stock) {
+                    if (cartItem?.quantity > product.units_in_stock) {
                         unavailable.push({ ...product, quantity: cartItem.quantity })
                     }
-                    return { ...product, quantity: cartItem.quantity }
+                    return { ...product, quantity: cartItem?.quantity }
                 }
             })
             setUnavailableProducts([...unavailable])
@@ -53,7 +53,7 @@ function CartPage() {
             return 0
         }
         const result = orderList.reduce((acc, item) => {
-            const itemCost = item.quantity * parseFloat(item.price)
+            const itemCost = item?.quantity * parseFloat(item?.price)
             return acc + itemCost
         }, 0)
         return (result.toFixed(2))
@@ -102,17 +102,17 @@ function CartPage() {
                         </Col>
                     </Row>
 
-                    {orderList.map((orderProduct) => {
-                        return (
-                            <Row key={`checkout${orderProduct.id}`}>
+                    {orderList.map((orderProduct) => { {/*Somehow null orderProduct gets here if I delete not 0th element*/}
+                        return ( 
+                            <Row key={`checkout${orderProduct?.id}`}>
                                 <Col className="align-items-center">
                                     <div className="itemInCheckout">
-                                        {orderProduct.quantity} x <strong>{orderProduct.name}</strong>
+                                        {orderProduct?.quantity} x <strong>{orderProduct?.name}</strong>
                                     </div>
                                     <div className="dotted-line"></div>
                                     <div className="priceInCheckout">
                                         <span>
-                                            {(orderProduct.quantity * parseFloat(orderProduct.price) * (1 - orderProduct.discount * 0.01)).toFixed(2)} {currency}
+                                            {(orderProduct?.quantity * parseFloat(orderProduct?.price) * (1 - orderProduct?.discount * 0.01)).toFixed(2)} {currency} {/*Temporary measure with .?*/}
                                         </span>
                                     </div>
                                 </Col>
